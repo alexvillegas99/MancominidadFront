@@ -1,0 +1,233 @@
+<div class="main-content">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="header">
+          <button class="btn btn-primary btn-fill" *ngIf="rol==='admin' || rol==='recaudador'" (click)="open(modalPlaca)">
+            <i class="fa fa-plus"></i> Agregar Placa
+          </button>
+        </div>
+        <div class="content table-responsive table-full-width">
+          <div class="box">
+            <div class="container-4">
+              <input
+                style="width: 100% !important"
+                type="search"
+                id="search"
+                placeholder="Buscar..."
+                (keyup)="buscarPlaca()"
+                [(ngModel)]="buscar"
+              />
+              <button class="icon"><i class="fa fa-search"></i></button>
+           
+           
+            </div>
+           
+          </div>
+
+          <table class="table table-hover" style="text-align: center;">
+            <thead>
+              <tr>
+                <th *ngFor="let encabezado of encabezados">{{ encabezado }}</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let placa of plcasFiltradas
+                    | slice: (page - 1) * pageSize:page * pageSize;
+                  let i = index
+                "
+              >
+                <td>{{ i + 1 }}</td>
+                <td>{{ placa.placa }}</td>
+                <td>{{ placa.tipo_placa  }}</td>
+                <td>{{ placa.tipo_vehiculo  }}</td>
+                <td *ngIf="placa.estado"> <span class="badge bg-info">Entregado </span></td>
+                <td *ngIf="!placa.estado"><span class="badge bg-danger">Pendiente </span></td>
+                <td>{{ placa.usuario}}</td>
+                <td>
+                  <button
+                    (click)="open(modalPlaca, placa)"
+                    class="btn btn-success btn-fill"
+                  >
+                    <i class="fa fa-edit"></i>
+                  </button>
+                  <button
+                  *ngIf="rol==='admin'"
+                    class="btn btn-danger btn-fill"
+                    (click)="eliminarPlaca(placa.id)"
+                  >
+                    <i class="fa fa-trash"></i>
+                  </button>
+                
+                </td>
+              </tr>
+              <tr *ngIf="plcasFiltradas.length===0">
+                <td colspan="11">
+                <div
+                class="table-responsive table-full-width"
+                style="text-align: center"
+              
+              >
+                <img src="assets/img/no-documentos.png" alt="" />
+                <br />
+                <label>No se encontraron registros</label>
+              </div>
+            </td>
+            </tr>
+            </tbody>
+          </table>
+          <ngb-pagination
+            [collectionSize]="plcasFiltradas.length"
+            [(page)]="page"
+            aria-label="Default pagination"
+          ></ngb-pagination>
+        </div>
+      </div>
+      <!-- Modal Placa -->
+      <ng-template #modalPlaca let-modal>
+        <div class="main-content">
+          <div class="container-fluid">
+            <div class="modal-header">
+              <h4 class="title" *ngIf="placaSeleccionada === undefined">
+                Agregar placa
+              </h4>
+              <h4 class="title" *ngIf="placaSeleccionada != undefined">
+                Editar placa
+              </h4>
+              <button
+                type="button"
+                class="close"
+                aria-label="Close"
+                (click)="cerrarModal()"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form [formGroup]="placaForm">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Placa</label>
+                      <input
+                        type="text"
+                        formControlName="placa"
+                        class="form-control"
+                      />
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                        placaForm.get('placa')?.hasError('required') &&
+                        placaForm.get('placa')?.touched
+                        "
+                      >
+                        La placa <strong>es requerida.</strong>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Tipo Placa</label>
+                      <select
+                        class="form-select"
+                        aria-label="Default select example"
+                        formControlName="id_tipo_placa"
+                      >
+                        <option *ngFor="let placa of tipoPlacas" [value]="placa.id">
+                          {{ placa.tipo }}
+                        </option>
+                      </select>
+                      <span
+                        class="text-danger"
+                        *ngIf="placaForm.get('id_tipo_placa')?.hasError('required') &&
+                        placaForm.get('id_tipo_placa')?.touched
+                        "
+                      >
+                        El tipo de placa <strong>es requerido.</strong>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Tipo vehículo</label>
+                      <select
+                        class="form-select"
+                        aria-label="Default select example"
+                        formControlName="id_tipo_vehiculo"
+                      >
+                        <option *ngFor="let vehiculo of tipoVehiculos" [value]="vehiculo.id">
+                          {{ vehiculo.tipo }}
+                        </option>
+                      </select>
+                      <span
+                        class="text-danger"
+                        *ngIf="placaForm.get('id_tipo_vehiculo')?.hasError('required') &&
+                        placaForm.get('id_tipo_vehiculo')?.touched
+                        "
+                      >
+                        El tipo de vehículo <strong>es requerido.</strong>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Estado</label>
+                      <br />
+                      <div
+                        class="btn-group btn-group-toggle"
+                        ngbRadioGroup
+                        name="radioBasic"
+                        formControlName="estado"
+                        (change)="imprimir()"
+                      >
+                        <label ngbButtonLabel class="btn-success">
+                          <input ngbButton type="radio" [value]="true" /> Entregado
+                        </label>
+                        <label ngbButtonLabel class="btn-danger">
+                          <input ngbButton type="radio" [value]="false" />
+                          Pendiente
+                        </label>
+                      </div>
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                        placaForm.get('estado')?.hasError('required') &&
+                        placaForm.get('estado')?.touched
+                        "
+                      >
+                        El estado <strong>es requerido.</strong>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-primary btn-fill"
+                (click)="cerrarModal()"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                class="btn btn-success btn-fill"
+                (click)="guardar()"
+                [disabled]="placaForm.invalid"
+              >
+                Guardar
+              </button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    
+    </div>
+  </div>
+  

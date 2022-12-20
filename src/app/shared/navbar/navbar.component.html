@@ -1,0 +1,21 @@
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+   
+            <div class="row" style="  width:100%" >
+                <div class="col-md 6">
+                    <label class="navbar-brand" >{{getTitle()}}</label>
+                </div>
+                <div class="col-md 6" style="text-align:right; ">
+                    <label class="navbar-brand" >Usuario: {{usuario.toUpperCase()}}</label>
+                </div>
+            </div>
+         
+         
+
+        <form class="d-flex" *ngIf="isMobileMenu()">
+            <button type="button"  class="navbar-toggle" data-toggle="collapse" (click)="sidebarToggle()">
+                <i class="pe-7s-menu"></i>
+            </button> 
+          </form>
+    </div>
+</nav>

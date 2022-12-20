@@ -1,0 +1,42 @@
+<div class="wrapper fadeInDown">
+
+  <div id="formContent">
+    <!-- Tabs Titles -->
+     <h2 class="active"> Mancomunidad de Tránsito de Tungurahua </h2>
+    <!-- Icon -->
+    <div class="fadeIn first">
+      <img src="./assets/img/user.png" id="icon" />
+    </div>
+
+    <!-- Login Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <input type="text" id="usuario" formControlName="usuario" class="fadeIn second" placeholder="Usuario">
+      <br>
+      <span class="text-danger"
+      *ngIf="loginForm.get('usuario')?.hasError('required') && loginForm.get('usuario')?.touched">
+      El usuario  <strong>es requerido.</strong>
+      </span>
+      <span class="text-danger"
+      *ngIf="loginForm.get('usuario')?.hasError('minlength') && loginForm.get('usuario')?.touched">
+      El usuario debe tener minimo<strong>6 caracteres</strong>
+      </span>
+      <input type="password" id="clave" formControlName="clave" class="fadeIn third" placeholder="Contraseña">
+      <br>
+      <span class="text-danger"
+      *ngIf="loginForm.get('clave')?.hasError('required') && loginForm.get('clave')?.touched">
+      La contraseña  <strong> es requerida.</strong>
+      </span>
+      <span class="text-danger"
+      *ngIf="loginForm.get('clave')?.hasError('minlength') && loginForm.get('clave')?.touched">
+      La contraseña debe tener minimo <strong>6 caracteres</strong>
+      </span>
+      <input  type="submit" [disabled]='loginForm.invalid' class="fadeIn fourth" value="Iniciar Sesión" > 
+    </form>
+
+    <!-- Remind Passowrd -->
+   <!--  <div id="formFooter">
+   <a class="underlineHover" href="#">Olvido su contraseña?</a> 
+    </div> -->
+
+  </div>
+</div>

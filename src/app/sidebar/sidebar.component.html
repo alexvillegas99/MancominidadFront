@@ -1,0 +1,24 @@
+
+<div class="sidebar-wrapper">
+    <div class="logo">
+        <label class="simple-text text-center " style="font-weight: bold;">
+           Mancomunidad de Tránsito de Tungurahua
+        </label>
+    </div>
+    <ul class="nav responsive-nav">
+     
+           
+        <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}}" style="width: 100%; ">
+            <a  [routerLink]="[menuItem.path]" style="height:40px; padding: 5px;">
+                <i class="{{menuItem.icon}}"></i>
+                <p>{{menuItem.title}}</p>
+            </a>
+        </li>
+        <li class="active-pro" style=" cursor:pointer;" (click)="onLogOut()">
+            <a  style="height:40px; padding: 5px;" >
+                <i class="pe-7s-angle-left"></i>
+                <p>Cerrar Sesión</p>
+            </a>
+        </li>
+    </ul>
+</div>

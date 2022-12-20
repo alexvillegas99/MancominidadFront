@@ -1,0 +1,250 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <!-- formulario principal socios -->
+    <div class="card">
+      <div class="header">
+        <button class="btn btn-primary btn-fill" (click)="open(modalusuario)" *ngIf="rol==='admin'">
+          <i class="fa fa-plus"></i> Agregar Usuario
+        </button>
+      </div>
+      <div class="content table-responsive table-full-width">
+        <div class="box">
+          <div class="container-4">
+            <input
+              style="width: 100% !important"
+              type="search"
+              (keyup)="buscarUsuarios()"
+              id="search"
+              [(ngModel)]="buscar"
+              placeholder="Buscar..."
+            />
+            <button class="icon"><i class="fa fa-search"></i></button>
+          </div>
+        </div>
+        <table class="table table-hover" style="text-align: center">
+          <thead>
+            <tr>
+              <th *ngFor="let encabezado of encabezados">{{ encabezado }}</th>
+              <th *ngIf="rol==='admin'">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let usuario of usuariosFiltrados
+                  | slice: (page - 1) * pageSize:page * pageSize;
+                let i = index
+              "
+            >
+              <td>{{ i + 1 }}</td>
+              <td>{{ usuario.user }}</td>
+              <td>{{ usuario.rol }}</td>
+              <td *ngIf="usuario.estado">Activo</td>
+              <td *ngIf="!usuario.estado">Inactivo</td>
+              <td *ngIf="rol==='admin'"> 
+                <button
+                  (click)="open(modalusuario, usuario)"
+                  class="btn btn-success btn-fill"
+                >
+                  <i class="fa fa-edit"></i>
+                </button>
+                <button
+                  *ngIf="usuario.estado"
+                  (click)="cambiarEstado(usuario.id, usuario.estado)"
+                  class="btn btn-primary btn-fill"
+                >
+                  <i class="fa fa-check"></i>
+                </button>
+                <button
+                  *ngIf="!usuario.estado"
+                  (click)="cambiarEstado(usuario.id, usuario.estado)"
+                  class="btn btn-danger btn-fill"
+                >
+                  <i class="fa fa-ban"></i>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="usuariosFiltrados.length===0">
+              <td colspan="10">
+              <div
+              class="table-responsive table-full-width"
+              style="text-align: center"
+            
+            >
+              <img src="assets/img/no-documentos.png" alt="" />
+              <br />
+              <label>No se encontraron registros</label>
+            </div>
+          </td>
+          </tr>
+          </tbody>
+        </table>
+        <ngb-pagination
+          [collectionSize]="usuariosFiltrados.length"
+          [(page)]="page"
+          aria-label="Default pagination"
+        ></ngb-pagination>
+      </div>
+    </div>
+
+    <!-- Agregar usuario -->
+    <ng-template #modalusuario let-modal>
+      <div class="main-content">
+        <div class="container-fluid">
+          <div class="modal-header">
+            <h4 class="title" *ngIf="usuarioSeleccionado === undefined">
+              Agregar usuario
+            </h4>
+            <h4 class="title" *ngIf="usuarioSeleccionado != undefined">
+              Editar usuario
+            </h4>
+            <button
+              type="button"
+              class="close"
+              aria-label="Close"
+              (click)="cerrarModal()"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="usuarioForm">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Usuario</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="user"
+                    />
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        usuarioForm.get('user')?.hasError('required') &&
+                        usuarioForm.get('user')?.touched
+                      "
+                    >
+                      El usuario <strong>es requerido.</strong>
+                    </span>
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        usuarioForm.get('user')?.hasError('minlength') &&
+                        usuarioForm.get('user')?.touched
+                      "
+                    >
+                      El usuario debe tener minimo<strong>6 caracteres</strong>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-6" *ngIf="usuarioSeleccionado === undefined">
+                  <div class="form-group">
+                    <label>Contraseña</label>
+                    <input
+                      type="password"
+                      class="form-control"
+                      formControlName="pass"
+                    />
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        usuarioForm.get('pass')?.hasError('required') &&
+                        usuarioForm.get('pass')?.touched
+                      "
+                    >
+                      La contraseña <strong>es requerida.</strong>
+                    </span>
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        usuarioForm.get('pass')?.hasError('minlength') &&
+                        usuarioForm.get('pass')?.touched
+                      "
+                    >
+                      La contraseña debe tener minimo<strong
+                        >6 caracteres</strong
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Rol</label>
+                    <select
+                      class="form-select"
+                      aria-label="Default select example"
+                      formControlName="id_rol"
+                    >
+                      <option *ngFor="let rol of roles" [value]="rol.id">
+                        {{ rol.rol }}
+                      </option>
+                    </select>
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        usuarioForm.get('id_rol')?.hasError('required') &&
+                        usuarioForm.get('id_rol')?.touched
+                      "
+                    >
+                      El rol <strong>es requerido.</strong>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Estado</label>
+                    <br />
+                    <div
+                      class="btn-group btn-group-toggle"
+                      ngbRadioGroup
+                      name="radioBasic"
+                      formControlName="estado"
+                    >
+                      <label ngbButtonLabel class="btn-success">
+                        <input ngbButton type="radio" [value]="true" /> Activo
+                      </label>
+                      <label ngbButtonLabel class="btn-danger">
+                        <input ngbButton type="radio" [value]="false" />
+                        Inactivo
+                      </label>
+                    </div>
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        usuarioForm.get('estado')?.hasError('required') &&
+                        usuarioForm.get('estado')?.touched
+                      "
+                    >
+                      El estado <strong>es requerido.</strong>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary btn-fill"
+              (click)="cerrarModal()"
+            >
+              Cancelar
+            </button>
+            <button
+              type="button"
+              class="btn btn-success btn-fill"
+              [disabled]="usuarioForm.invalid"
+              (click)="saveUsuario()"
+            >
+              Guardar
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>

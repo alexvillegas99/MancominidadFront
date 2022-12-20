@@ -1,0 +1,83 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="header">
+            <h4 class="title">Placas entregadas</h4>
+          </div>
+          <div class="content">
+            <div class="table-full-width">
+              <table class="table">
+                <tbody>
+                  <tr *ngFor="let socio of sociosSinMoraListado">
+                    <td>
+                      {{ socio.codigo }} - {{ socio.nombres }}
+                      {{ socio.apellidos }}
+                    </td>
+                  </tr>
+                  <tr *ngIf="sociosSinMoraListado.length === 0">
+                    <div
+                      class="table-responsive table-full-width"
+                      style="text-align: center"
+                    >
+                      <img src="assets/img/no-documentos.png" alt="" />
+                      <br />
+                      <label>No se encontraron registros</label>
+                    </div>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="header">
+            <h4 class="title">Placas sin entregar</h4>
+          </div>
+          <div class="content">
+            <div class="table-full-width">
+              <table class="table">
+                <tbody>
+                  <tr *ngFor="let socio of sociosMoraListado">
+                    <td>
+                      {{ socio.codigo }} - {{ socio.nombres }}
+                      {{ socio.apellidos }}
+                    </td>
+                  </tr>
+                  <tr *ngIf="sociosMoraListado.length === 0">
+                    <div
+                      class="table-responsive table-full-width"
+                      style="text-align: center"
+                    >
+                      <img src="assets/img/no-documentos.png" alt="" />
+                      <br />
+                      <label>No se encontraron registros</label>
+                    </div>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <lbd-chart
+          *ngIf="emailChartData != null"
+          [title]="'Placas'"
+          [chartClass]="'ct-perfect-fourth'"
+          [chartType]="emailChartType"
+          [chartData]="emailChartData"
+          [legendItems]="emailChartLegendItems"
+          [withHr]="true"
+          [footerText]="'Para datos actuales recargar la página'"
+        >
+        </lbd-chart>
+      </div>
+    </div>
+  </div>
+</div>

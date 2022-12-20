@@ -1,0 +1,111 @@
+<div class="main-content" >
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Mi perfil</h4>
+                    </div>
+                    <div class="content">
+                        <form [formGroup]="perfilForm">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Usuario</label>
+                                        <input type="text" formControlName="user" class="form-control" [attr.disabled]="activar ? '' : null">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Rol</label>
+                                        <input type="text" formControlName="id_rol" class="form-control" disabled>
+                                    </div>
+                                </div>
+                                
+                            </div>
+<div class="row">
+    
+</div>
+                            <button type="submit" class="btn btn-info btn-fill pull-left" (click)="open(modalCambioClave)">Cambiar Contraseña</button>
+                          
+                            <button type="submit" class="btn btn-info btn-fill pull-right" (click)="cambiarEstado()">Actualizar Perfil</button>
+                            <button type="submit" class="btn btn-danger btn-fill pull-right mr-2" *ngIf="!activar" (click)="cancelar()">Cancelar</button>
+                           
+                        </form>
+                    </div>
+                </div>
+            </div>
+          
+        </div>
+    </div>
+</div>
+<ng-template #modalCambioClave let-modal>
+    <div class="main-content">
+      <div class="container-fluid">
+     
+        <div class="modal-header" style="text-align: center">
+          <h4 class="title" >Cambio contraseña</h4>
+          <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class=" modal-body">
+          <form [formGroup]="CambioClaveForm" style="text-align: center">
+            <div class="row">
+              
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Contraseña actual</label>
+                  <input type="password" formControlName="claveActual" class="form-control" >
+                </div>
+              </div>
+            
+             
+            </div>
+            <div class="row">
+                
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Nueva contraseña</label>
+                  <input type="password" formControlName="nuevaClave" class="form-control" >
+                  <span class="text-danger"
+                  *ngIf="CambioClaveForm.get('nuevaClave')?.hasError('minlength') && CambioClaveForm.get('nuevaClave')?.touched">
+                  Minimo <strong>debe tener 6 caracteres</strong>
+              </span>
+                </div>
+              </div>
+            
+             
+            </div>
+            <div class="row">
+               
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Repetir nueva contraseña</label>
+                  <input type="password" formControlName="repetirClave" class="form-control" >
+                  <span class="text-danger"
+                  *ngIf="CambioClaveForm.get('repetirClave')?.hasError('minlength') && CambioClaveForm.get('repetirClave')?.touched">
+                  Minimo <strong>debe tener 6 caracteres</strong>
+              </span>
+                  <span class="text-danger"
+                  *ngIf="CambioClaveForm.hasError('notSame')">
+                  Las contraseñas<strong> no coinciden</strong>
+              </span>
+                </div>
+              </div>
+             
+             
+            </div>
+           
+          </form>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary btn-fill" (click)="cerrarModal()" >Cancelar</button>
+          <button type="button" class="btn btn-success btn-fill" (click)="cambiarClave()"  [disabled]='CambioClaveForm.invalid'>Guardar</button>
+        </div>
+
+      </div>
+    </div>
+  
+  </ng-template>
