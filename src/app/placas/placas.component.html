@@ -2,7 +2,7 @@
     <div class="container-fluid">
       <div class="card">
         <div class="header">
-          <button class="btn btn-primary btn-fill" *ngIf="rol==='admin' || rol==='recaudador'" (click)="open(modalPlaca)">
+          <button class="btn btn-primary btn-fill" *ngIf="rol==='admin'" (click)="open(modalPlaca)">
             <i class="fa fa-plus"></i> Agregar Placa
           </button>
         </div>
@@ -14,7 +14,7 @@
                 type="search"
                 id="search"
                 placeholder="Buscar..."
-                (keyup)="buscarPlaca()"
+                (keyup)="buscarPlacas()"
                 [(ngModel)]="buscar"
               />
               <button class="icon"><i class="fa fa-search"></i></button>
@@ -41,11 +41,15 @@
               >
                 <td>{{ i + 1 }}</td>
                 <td>{{ placa.placa }}</td>
+                <td>{{ placa.propietario }}</td>
+                <td>{{ placa.cedula }}</td>
                 <td>{{ placa.tipo_placa  }}</td>
                 <td>{{ placa.tipo_vehiculo  }}</td>
                 <td *ngIf="placa.estado"> <span class="badge bg-info">Entregado </span></td>
                 <td *ngIf="!placa.estado"><span class="badge bg-danger">Pendiente </span></td>
                 <td>{{ placa.usuario}}</td>
+                <td>{{ placa.fecha_ingreso | date:short }}</td>
+                <td> {{ placa.fecha_modificacion ===null ? "No modificado" : placa.fecha_modificacion  | date:short}}</td>
                 <td>
                   <button
                     (click)="open(modalPlaca, placa)"
@@ -146,6 +150,46 @@
                         "
                       >
                         El tipo de placa <strong>es requerido.</strong>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Propietario</label>
+                      <input
+                        type="text"
+                        formControlName="propietario"
+                        class="form-control"
+                      />
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                        placaForm.get('propietario')?.hasError('required') &&
+                        placaForm.get('propietario')?.touched
+                        "
+                      >
+                        La placa <strong>es requerida.</strong>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Cedula</label>
+                      <input
+                        type="text"
+                        formControlName="cedula"
+                        class="form-control"
+                      />
+                      <span
+                        class="text-danger"
+                        *ngIf="
+                        placaForm.get('cedula')?.hasError('required') &&
+                        placaForm.get('cedula')?.touched
+                        "
+                      >
+                        La placa <strong>es requerida.</strong>
                       </span>
                     </div>
                   </div>

@@ -43,6 +43,7 @@ registerLocaleData(localeEs,'es');
     AdminLayoutComponent,
     LoginComponent,
     ConsultaComponent,
+    
   ],
   providers: [{provide:LOCALE_ID, useValue:'es'}],
   bootstrap: [AppComponent],

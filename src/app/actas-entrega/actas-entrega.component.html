@@ -1,0 +1,138 @@
+<div class="main-content">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="content table-responsive table-full-width">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label">Nombre</label>
+                        <input type="email" class="form-control" [(ngModel)]="nombre">
+                      </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label">Cedula</label>
+                        <input type="email" class="form-control" [(ngModel)]="cedula">
+                      </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label">Número de placa</label>
+                        <input type="email" class="form-control" [(ngModel)]="numero_placa">
+                      </div>
+                </div>
+               
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label">Cantidad</label>
+                        <input type="email" class="form-control" [(ngModel)]="cantidad">
+                      </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <label class="form-label">Detalle</label>
+                        <input type="email" class="form-control" [(ngModel)]="detalle">
+                      </div>
+                </div>
+               
+            </div>
+            <div class="boton">
+            <button
+            class="btn col col-lg-4 btn-danger btn-block ml-4"
+            (click)="getPDF()"
+          >
+            Descargar PDF
+          </button>
+        </div>
+            <div class="centrado">
+
+          <div class="cont-html">
+            <div class="modal-body canvas_div_pdf">
+                <div class="">
+                  <div class="container">
+                    <div class="row">
+                      <div id="htmlData">
+                        <div class="row">
+                          <div class="col-md-2" >
+                           
+                          </div>
+                          <div class="col-md-8">
+                            <div style="text-align: center">
+                              <h5>EMPRESA PUBLICA MANCOMUNADA</h5>
+                              <h6>San Pedro de Pelileo - Calle Pelileo Inmortal y Cucaray</h6>
+                              <label  style="text-decoration: underline;">www.transitotungurahua.gob.ec</label>
+                              <h6>Archivo - Bodega</h6>
+                            </div>
+                          </div>
+                          <div class="col-md-2 cont-icono">
+                            <img class="img-icono"  src="./assets/img/logo.png" alt="">
+                          </div>
+                        </div>
+                        <div class="numero-acta">
+                            ACTA N° B0D-DICIEMBRE-756-2022<br><br>
+                        </div>
+                        <div class="entrega">
+                            EPM - GESTITRANSV-T-ARCHIVO <br> <br>
+                            ACTA ENTREGA - RECEPCIÓN <br><br>
+                        </div>
+                        <div class="contenido">
+                            En la ciudad de San Pedro de Pelileo, al 20 de diciembre 2022 comparecen, por una parte Monica Llerena
+                            quien entrega y el Sr(ita) {{nombre}} con CI. {{cedula}} suscriben la presente acta de 
+                            entreha de la placa:
+                            <br><br>
+                            <table class="table table-bordered ">
+                                <thead>
+                                  <tr>
+                                    <th class="col-md-2">CANTIDAD</th>
+                                    <th class="col-md-8">DETALLE</th>
+                                    <th class="col-md-2">N° DE PLACA</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <th >{{cantidad}}</th>
+                                    <td>{{detalle}}</td>
+                                    <td>{{numero_placa}}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                              <br>
+                              Para constancia de lo antes indicado firman la presente acta de partes por diplicado de igual tenor.
+                              <br>
+                        </div>
+                    <div class="pie-pagina">
+                            <div class="row">
+                                <div class="col-md-6">ENTREGUE CONFORME</div>
+                                <div class="col-md-6">RECIBÍ CONFORME</div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    ---------------------------------- <br>
+                                    MONICA LLERENA
+                                    TRÁNSITO TUNGURAHUA
+                                </div>
+                                <div class="col-md-6">
+                                    ---------------------------------- <br>
+                                    MUÑOZ DIAZ EDWIN FABRICIO
+                                    CI. 2300687510
+                                </div>
+                            </div>
+                        
+                    </div>
+                      
+                      </div>
+                    </div>
+                  </div>
+                </div>
+        </div>
+    </div>
+    </div>
+      </div>
+  
+    
+    </div>
+  </div>
+  

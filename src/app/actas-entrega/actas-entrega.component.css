@@ -1,0 +1,52 @@
+.row{
+    padding: 20px 20px 20px 20px;
+}
+.canvas_div_pdf{
+   
+    width: 17cm !important;
+    height: 29,7cm !important;
+    margin:0px auto;
+  
+}
+.cont-html{
+   border: 1px black solid;
+    width: 17cm !important;
+    height: 29,7cm !important;
+    margin:0px auto;
+  
+}
+H5{
+    font-weight: bold;
+}
+
+.img-icono{
+    width: 150px; 
+    height: 120px;
+    margin-top: 20px;
+    margin-left: -40px;
+}
+.numero-acta{
+    text-align: right;
+    margin-top: -25px;
+}
+.entrega,.pie-pagina{
+    text-align: center;
+}
+.contenido{
+    text-align: justify;
+    font-size: 15px;
+}
+.table-bordered{
+    text-align: center;
+    font-size: 11px !important;
+}
+
+#htmlData{
+    margin-top: -30px;
+}
+.btn{
+    margin-bottom: 15px;
+}
+.boton{
+    text-align: right;
+}

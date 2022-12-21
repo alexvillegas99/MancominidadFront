@@ -72,19 +72,24 @@ export class PlacasComponent implements OnInit {
   rol = localStorage.getItem("rol");
   placaForm = this.fb.group({
     placa: ["", Validators.required],
+    propietario: ["", Validators.required],
+    cedula: ["", Validators.required],
     id_tipo_placa: ["", Validators.required],
     id_tipo_vehiculo: ["", [Validators.required]],
     id_usuario_modifico: [""],
     estado: [""],
   });
-
   encabezados: string[] = [
     "#",
     "Placa",
+    "Propietario",
+    "Cedula",
     "Tipo de placa",
     "Tipo Vehículo",
     "estado",
     "Usario modifico",
+    "Fecha ingreso",
+    "Fecha modificación"
   ];
   open(content, placa?: Placa): void {
     this.placaSeleccionada = placa;
@@ -108,6 +113,12 @@ export class PlacasComponent implements OnInit {
       });
       this.placaForm.controls.estado.setValue(
         this.placaSeleccionada.estado ? true : false
+      );
+      this.placaForm.controls.propietario.setValue(
+        this.placaSeleccionada.propietario
+      );
+      this.placaForm.controls.cedula.setValue(
+        this.placaSeleccionada.cedula
       );
     } else {
       this.placaForm.controls.estado.setValue(false);
@@ -179,5 +190,14 @@ export class PlacasComponent implements OnInit {
           }
         });
     }
+  }
+  buscarPlacas() {
+    if (this.buscar === "") {
+      this.plcasFiltradas = this.placas;
+      return;
+    }
+    this._placaService.buscarPlaca(this.buscar).subscribe((result) => {
+      this.plcasFiltradas = result;
+    });
   }
 }

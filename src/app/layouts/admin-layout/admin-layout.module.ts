@@ -13,6 +13,7 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { UsuariosComponent } from "app/usuarios/usuarios.component";
 import { PlacasComponent } from "app/placas/placas.component";
 import { UserComponent } from "app/user/user.component";
+import { ActasEntregaComponent } from "app/actas-entrega/actas-entrega.component";
 
 @NgModule({
   imports: [
@@ -28,7 +29,8 @@ import { UserComponent } from "app/user/user.component";
     ReportesComponent,
     UsuariosComponent,
     PlacasComponent,
-    UserComponent
+    UserComponent,
+    ActasEntregaComponent
   ],
 })
 export class AdminLayoutModule {}
