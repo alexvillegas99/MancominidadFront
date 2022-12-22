@@ -46,3 +46,19 @@
   .dropdown:hover .dropbtn {
     background-color: #3e8e41;
   }
+
+  .sidebar-wrapper{
+    background-color: rgba(51, 75, 132,.5) !important;
+  }
+  .btn-azul{
+   background-color: #334b84 !important;
+  }
+  .btn-verde{
+    background-color: #28894f !important;
+  }
+  .btn-rojo{
+    background-color: #ce2a2b !important;
+  }
+  .page-item.active .page-link{
+    background-color: #334b84 !important;
+  }

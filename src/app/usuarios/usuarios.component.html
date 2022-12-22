@@ -3,7 +3,7 @@
     <!-- formulario principal socios -->
     <div class="card">
       <div class="header">
-        <button class="btn btn-primary btn-fill" (click)="open(modalusuario)" *ngIf="rol==='admin'">
+        <button class="btn btn-azul btn-fill" (click)="open(modalusuario)" *ngIf="rol==='admin'">
           <i class="fa fa-plus"></i> Agregar Usuario
         </button>
       </div>
@@ -37,6 +37,7 @@
               "
             >
               <td>{{ i + 1 }}</td>
+              <td>{{ usuario.nombre }}</td>
               <td>{{ usuario.user }}</td>
               <td>{{ usuario.rol }}</td>
               <td *ngIf="usuario.estado">Activo</td>
@@ -44,14 +45,14 @@
               <td *ngIf="rol==='admin'"> 
                 <button
                   (click)="open(modalusuario, usuario)"
-                  class="btn btn-success btn-fill"
+                  class="btn btn-verde btn-fill"
                 >
                   <i class="fa fa-edit"></i>
                 </button>
                 <button
                   *ngIf="usuario.estado"
                   (click)="cambiarEstado(usuario.id, usuario.estado)"
-                  class="btn btn-primary btn-fill"
+                  class="btn btn-azul btn-fill"
                 >
                   <i class="fa fa-check"></i>
                 </button>
@@ -110,7 +111,27 @@
           <div class="modal-body">
             <form [formGroup]="usuarioForm">
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Nombre</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="nombre"
+                    />
+                    <span
+                      class="text-danger"
+                      *ngIf="
+                        usuarioForm.get('nombre')?.hasError('required') &&
+                        usuarioForm.get('nombre')?.touched
+                      "
+                    >
+                      El nombre <strong>es requerido.</strong>
+                    </span>
+                   
+                  </div>
+                </div>
+                <div class="col-md-4">
                   <div class="form-group">
                     <label>Usuario</label>
                     <input
@@ -138,7 +159,7 @@
                     </span>
                   </div>
                 </div>
-                <div class="col-md-6" *ngIf="usuarioSeleccionado === undefined">
+                <div class="col-md-4" *ngIf="usuarioSeleccionado === undefined">
                   <div class="form-group">
                     <label>Contraseña</label>
                     <input
@@ -229,14 +250,14 @@
           <div class="modal-footer">
             <button
               type="button"
-              class="btn btn-primary btn-fill"
+              class="btn btn-azul btn-fill"
               (click)="cerrarModal()"
             >
               Cancelar
             </button>
             <button
               type="button"
-              class="btn btn-success btn-fill"
+              class="btn btn-verde btn-fill"
               [disabled]="usuarioForm.invalid"
               (click)="saveUsuario()"
             >

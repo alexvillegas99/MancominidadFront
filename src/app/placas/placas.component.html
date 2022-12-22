@@ -2,7 +2,7 @@
     <div class="container-fluid">
       <div class="card">
         <div class="header">
-          <button class="btn btn-primary btn-fill" *ngIf="rol==='admin'" (click)="open(modalPlaca)">
+          <button class="btn btn-azul btn-fill" *ngIf="rol==='admin'" (click)="open(modalPlaca)">
             <i class="fa fa-plus"></i> Agregar Placa
           </button>
         </div>
@@ -45,21 +45,21 @@
                 <td>{{ placa.cedula }}</td>
                 <td>{{ placa.tipo_placa  }}</td>
                 <td>{{ placa.tipo_vehiculo  }}</td>
-                <td *ngIf="placa.estado"> <span class="badge bg-info">Entregado </span></td>
-                <td *ngIf="!placa.estado"><span class="badge bg-danger">Pendiente </span></td>
+                <td *ngIf="placa.estado"> <span class="badge btn-verde">Entregado </span></td>
+                <td *ngIf="!placa.estado"><span class="badge btn-rojo">Pendiente </span></td>
                 <td>{{ placa.usuario}}</td>
                 <td>{{ placa.fecha_ingreso | date:short }}</td>
                 <td> {{ placa.fecha_modificacion ===null ? "No modificado" : placa.fecha_modificacion  | date:short}}</td>
                 <td>
                   <button
                     (click)="open(modalPlaca, placa)"
-                    class="btn btn-success btn-fill"
+                    class="btn btn-verde btn-fill"
                   >
                     <i class="fa fa-edit"></i>
                   </button>
                   <button
                   *ngIf="rol==='admin'"
-                    class="btn btn-danger btn-fill"
+                    class="btn btn-rojo btn-fill"
                     (click)="eliminarPlaca(placa.id)"
                   >
                     <i class="fa fa-trash"></i>
@@ -254,14 +254,14 @@
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-primary btn-fill"
+                class="btn btn-azul btn-fill"
                 (click)="cerrarModal()"
               >
                 Cancelar
               </button>
               <button
                 type="button"
-                class="btn btn-success btn-fill"
+                class="btn btn-verde btn-fill"
                 (click)="guardar()"
                 [disabled]="placaForm.invalid"
               >

@@ -40,6 +40,7 @@ export class UsuariosComponent implements OnInit {
   }
   usuarioForm = this.fb.group(
     {
+      nombre: ["", [Validators.required]],
       user: ["", [Validators.required, Validators.minLength(6)]],
       pass: ["", [Validators.required, Validators.minLength(6)]],
       id_rol: ["", [Validators.required]],
@@ -49,6 +50,7 @@ export class UsuariosComponent implements OnInit {
   );
   encabezados: string[] = [
     "#",
+    "Nombre",
     "Usuario",
     "Rol",
     "Estado"
@@ -78,6 +80,7 @@ export class UsuariosComponent implements OnInit {
           : "";
       }
       this.usuarioForm.controls.id_rol.setValue(this.roles[posicion].id);
+      this.usuarioForm.controls.nombre.setValue(this.usuarioSeleccionado.nombre);
       this.usuarioForm.controls.estado.setValue(
         this.usuarioSeleccionado.estado ? true : false
       );

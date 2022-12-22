@@ -9,4 +9,5 @@ export interface UserResponse{
     userId:number;
     role:string;
     usuario:string;
+    userName:string;
 }

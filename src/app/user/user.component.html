@@ -9,6 +9,12 @@
                     <div class="content">
                         <form [formGroup]="perfilForm">
                             <div class="row">
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Nombre</label>
+                                    <input type="text" formControlName="nombre" class="form-control" [attr.disabled]="activar ? '' : null">
+                                </div>
+                            </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Usuario</label>
@@ -26,10 +32,10 @@
 <div class="row">
     
 </div>
-                            <button type="submit" class="btn btn-info btn-fill pull-left" (click)="open(modalCambioClave)">Cambiar Contraseña</button>
+                            <button type="submit" class="btn btn-azul btn-fill pull-left" (click)="open(modalCambioClave)">Cambiar Contraseña</button>
                           
-                            <button type="submit" class="btn btn-info btn-fill pull-right" (click)="cambiarEstado()">Actualizar Perfil</button>
-                            <button type="submit" class="btn btn-danger btn-fill pull-right mr-2" *ngIf="!activar" (click)="cancelar()">Cancelar</button>
+                            <button type="submit" class="btn btn-azul btn-fill pull-right" (click)="cambiarEstado()">Actualizar Perfil</button>
+                            <button type="submit" class="btn btn-rojo btn-fill pull-right mr-2" *ngIf="!activar" (click)="cancelar()">Cancelar</button>
                            
                         </form>
                     </div>
@@ -101,8 +107,8 @@
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary btn-fill" (click)="cerrarModal()" >Cancelar</button>
-          <button type="button" class="btn btn-success btn-fill" (click)="cambiarClave()"  [disabled]='CambioClaveForm.invalid'>Guardar</button>
+          <button type="button" class="btn btn-azul btn-fill" (click)="cerrarModal()" >Cancelar</button>
+          <button type="button" class="btn btn-verde btn-fill" (click)="cambiarClave()"  [disabled]='CambioClaveForm.invalid'>Guardar</button>
         </div>
 
       </div>

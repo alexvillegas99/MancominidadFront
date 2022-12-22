@@ -25,6 +25,7 @@ export class UserComponent implements OnInit {
   activar: boolean = true;
   perfilForm = this.fb.group({
     user: ["", [Validators.required]],
+    nombre: ["", [Validators.required]],
     id_rol: ["", [Validators.required]]
   });
 
@@ -57,6 +58,7 @@ export class UserComponent implements OnInit {
     this._usuarioService.getUsuario(userId).subscribe((result) => {
       this.perfilForm.controls.id_rol.setValue(result.rol);
       this.perfilForm.controls.user.setValue(result.user);
+      this.perfilForm.controls.nombre.setValue(result.nombre);
     });
   }
 
@@ -71,8 +73,10 @@ export class UserComponent implements OnInit {
   guardarUsuario() {
    
     const user = this.perfilForm.get("user").value;
+    const nombre = this.perfilForm.get("nombre").value;
     const UsuarioGuardar = {
       user: user,
+      nombre:nombre
     };
 
     this._usuarioService

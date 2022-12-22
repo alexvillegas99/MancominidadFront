@@ -38,6 +38,7 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     localStorage.removeItem('usuario');
+    localStorage.removeItem('userName');
     localStorage.removeItem('rol');
     this.loggedId.next(false);
    
@@ -54,6 +55,7 @@ export class AuthService {
     localStorage.setItem('userId', String(res.userId));
     localStorage.setItem('rol', String(res.role));
     localStorage.setItem('usuario', String(res.usuario));
+    localStorage.setItem('userName', String(res.userName));
   }
   private error(err:any): Observable<never> {
 
