@@ -2,7 +2,7 @@
     <div class="container-fluid">
       <div class="card">
         <div class="header">
-          <button class="btn btn-azul btn-fill" *ngIf="rol==='admin'" (click)="open(modalPlaca)">
+          <button class="btn btn-azul btn-fill" (click)="open(modalPlaca)">
             <i class="fa fa-plus"></i> Agregar Placa
           </button>
         </div>
@@ -34,7 +34,7 @@
             <tbody>
               <tr
                 *ngFor="
-                  let placa of plcasFiltradas
+                  let placa of placasFiltradas
                     | slice: (page - 1) * pageSize:page * pageSize;
                   let i = index
                 "
@@ -67,7 +67,7 @@
                 
                 </td>
               </tr>
-              <tr *ngIf="plcasFiltradas.length===0">
+              <tr *ngIf="placasFiltradas.length===0">
                 <td colspan="11">
                 <div
                 class="table-responsive table-full-width"
@@ -83,7 +83,7 @@
             </tbody>
           </table>
           <ngb-pagination
-            [collectionSize]="plcasFiltradas.length"
+            [collectionSize]="placasFiltradas.length"
             [(page)]="page"
             aria-label="Default pagination"
           ></ngb-pagination>
@@ -116,6 +116,7 @@
                     <div class="form-group">
                       <label>Placa</label>
                       <input
+                      [attr.disabled]="rol!='admin' ? '' : null"
                         type="text"
                         formControlName="placa"
                         class="form-control"
@@ -135,6 +136,7 @@
                     <div class="form-group">
                       <label>Tipo Placa</label>
                       <select
+                      [attr.disabled]="rol!='admin' ? '' : null"
                         class="form-select"
                         aria-label="Default select example"
                         formControlName="id_tipo_placa"
@@ -145,6 +147,7 @@
                       </select>
                       <span
                         class="text-danger"
+                        [attr.disabled]="rol!='admin' ? '' : null"
                         *ngIf="placaForm.get('id_tipo_placa')?.hasError('required') &&
                         placaForm.get('id_tipo_placa')?.touched
                         "
@@ -159,6 +162,7 @@
                     <div class="form-group">
                       <label>Propietario</label>
                       <input
+                      [attr.disabled]="rol!='admin' ? '' : null"
                         type="text"
                         formControlName="propietario"
                         class="form-control"
@@ -178,6 +182,7 @@
                     <div class="form-group">
                       <label>Cedula</label>
                       <input
+                      [attr.disabled]="rol!='admin' ? '' : null"
                         type="text"
                         formControlName="cedula"
                         class="form-control"
@@ -199,6 +204,7 @@
                     <div class="form-group">
                       <label>Tipo vehículo</label>
                       <select
+                      [attr.disabled]="rol!='admin' ? '' : null"
                         class="form-select"
                         aria-label="Default select example"
                         formControlName="id_tipo_vehiculo"
@@ -222,16 +228,17 @@
                       <label>Estado</label>
                       <br />
                       <div
+                      
                         class="btn-group btn-group-toggle"
                         ngbRadioGroup
                         name="radioBasic"
                         formControlName="estado"
                         (change)="imprimir()"
                       >
-                        <label ngbButtonLabel class="btn-success">
-                          <input ngbButton type="radio" [value]="true" /> Entregado
+                        <label ngbButtonLabel class="btn-success" [attr.disabled]="rol!='admin' ? '' : null">
+                          <input  ngbButton type="radio" [value]="true" /> Entregado
                         </label>
-                        <label ngbButtonLabel class="btn-danger">
+                        <label ngbButtonLabel class="btn-danger" [attr.disabled]="rol!='admin' ? '' : null">
                           <input ngbButton type="radio" [value]="false" />
                           Pendiente
                         </label>

@@ -8,3 +8,19 @@ table,h6{
     max-width: 43%;
     width: 43;
 }
+.img-icono{
+    width: 150px; 
+    height: 120px;
+    margin-top: 20px;
+    margin-left: -80px;
+}
+.datos-generales{
+margin-left: 15px;
+margin-bottom: 10px;
+}
+.canvas_div_pdf{
+   
+    width: 17cm !important;
+    margin:0px auto;
+  
+}

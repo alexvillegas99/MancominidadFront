@@ -1,0 +1,564 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="header">
+            <h4 class="title">Reportes Placas</h4>
+          </div>
+          <div class="content">
+            <button
+              class="btn btn-azul btn-fill"
+              (click)="open(modalReportesPlacas)"
+            >
+              <i class="fa fa-plus"></i> Generar reporte
+            </button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="header">
+            <h4 class="title">Reportes Actas</h4>
+          </div>
+          <div class="content">
+            <button
+              class="btn btn-azul btn-fill"
+              (click)="open(modalReportesActas)"
+            >
+              <i class="fa fa-plus"></i> Generar reporte
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #modalReportesActas let-modal>
+ 
+  <div class="main-content">
+    <div class="container-fluid">
+      <div class="modal-header">
+        <h4 class="title">Reportes Actas</h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="cerrarModal()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <div
+            class="content table-responsive table-full-width"
+            style="margin-left: 15px"
+          >
+           
+            <div class="row">
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label class="form-label">Fecha de inicio</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    [(ngModel)]="fechaInicio"
+                  />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label class="form-label">Fecha fin</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    [(ngModel)]="fechaFin"
+                  />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Tipo vehículo</label>
+                  <select
+                    class="form-select"
+                    aria-label="Default select example"
+                    [(ngModel)]="tipoVehiculo"
+                  >
+                    <option *ngFor="let vehiculo of tipoVehiculos">
+                      {{ vehiculo.tipo }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+             
+            </div>
+            <div class="row">
+            
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Tipo placa</label>
+                  <select
+                    class="form-select"
+                    aria-label="Default select example"
+                    [(ngModel)]="tipoPlaca"
+                  >
+                    <option *ngFor="let placa of tiposPlacas">
+                      {{ placa.tipo }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <br />
+                <button
+                  class="btn btn-primary form-group"
+                  (click)="filtroActas  ()"
+                >
+                  Filtrar
+                </button>
+              </div>
+              <div class="col-md-4">
+                <br>
+                <button
+                class="btn btn-danger form-group"
+                (click)="resetPlacas()"
+              >
+                Restablecer
+              </button>
+              </div>
+            </div>
+          </div>
+          <div class="boton">
+            <button
+              class="btn col col-lg-4 btn-danger btn-block ml-4"
+              (click)="getPDF()"
+              *ngIf="placasFiltradas.length > 0"
+            >
+              Descargar PDF
+            </button>
+          </div>
+          <div class="centrado">
+            <div class="cont-html">
+              <div class="modal-body canvas_div_pdf">
+                <div class="">
+                  <div class="container">
+                    <div class="row">
+                      <div id="htmlData">
+                        <div class="row">
+                          <div class="col-md-2"></div>
+                          <div class="col-md-8">
+                            <div style="text-align: center">
+                              <h5>EMPRESA PUBLICA MANCOMUNADA</h5>
+                              <h6>
+                                San Pedro de Pelileo - Calle Pelileo Inmortal y
+                                Cucaray
+                              </h6>
+                              <label style="text-decoration: underline"
+                                >www.transitotungurahua.gob.ec</label
+                              >
+                              <h6>Archivo - Bodega</h6>
+                            </div>
+                          </div>
+                          <div class="col-md-2 cont-icono">
+                            <img
+                              class="img-icono"
+                              src="./assets/img/logo.png"
+                              alt=""
+                            />
+                          </div>
+                        </div>
+                        <div class="row datos-generales">
+                          <div class="row">
+                            <div class="col-md-4">
+                              <h6>Fecha: {{ fecha | date : short }}</h6>
+                            </div>
+                            <div class="col-md-4">
+                              <h6 *ngIf="tipoPlaca != ''">
+                                Tipo placa: {{ tipoPlaca }}
+                              </h6>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-4">
+                              <h6>Usuario: {{ usuario }}</h6>
+                            </div>
+                            <div class="col-md-4">
+                              <h6 *ngIf="tipoVehiculo != ''">
+                                Tipo vehículo: {{ tipoVehiculo }}
+                              </h6>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-4">
+                              <h6>
+                                <h6 *ngIf="estadoPlaca != ''">
+                                  Estado placa: {{ estadoPlaca }}
+                                </h6>
+                              </h6>
+                            </div>
+                            <div class="col-md-4"></div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-4">
+                              <h6
+                                *ngIf="
+                                  fechaInicio != undefined &&
+                                  fechaFin != undefined
+                                "
+                              >
+                                Desde: {{ fechaInicio }} Hasta:{{ fechaFin }}
+                              </h6>
+                              <h6
+                                *ngIf="
+                                  fechaInicio != undefined &&
+                                  fechaFin === undefined
+                                "
+                              >
+                                Fecha busqueda: {{ fechaInicio }}
+                              </h6>
+                            </div>
+                            <div class="col-md-4"></div>
+                          </div>
+                        </div>
+                        <div class="tabla-placas">
+                          <table
+                            class="table table-hover"
+                            style="text-align: center"
+                          >
+                            <thead>
+                              <tr>
+                                <th *ngFor="let encabezado of encabezadoActas">
+                                  {{ encabezado }}
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr
+                                *ngFor="
+                                  let actas of actasFiltradas;
+                                  let i = index
+                                "
+                              >
+                                <td>{{ i + 1 }}</td>
+                                <td>{{ actas.numero_acta }}</td>
+                                <td>{{ actas.cedula }}</td>
+                                <td>{{ actas.nombre }}</td>
+                                <td>{{ actas.numero_placa }}</td>
+                                <td>{{ actas.detalle }}</td>
+                                  <td>{{ actas.fecha_modificacion | date:short }}</td>
+                              
+                               
+                              </tr>
+                              <tr *ngIf="actasFiltradas.length === 0">
+                                <td colspan="11">
+                                  <div
+                                    class="table-responsive table-full-width"
+                                    style="text-align: center"
+                                  >
+                                    <img
+                                      src="assets/img/no-documentos.png"
+                                      alt=""
+                                    />
+                                    <br />
+                                    <label>No se encontraron registros</label>
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-azul btn-fill"
+        (click)="cerrarModal()"
+      >
+        Cancelar
+      </button>
+    </div>
+  </div>
+</ng-template>
+<ng-template #modalReportesPlacas let-modal>
+  <div class="main-content">
+    <div class="container-fluid">
+      <div class="modal-header">
+        <h4 class="title">Reportes Placas</h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="cerrarModal()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <div
+            class="content table-responsive table-full-width"
+            style="margin-left: 15px"
+          >
+          <div class="row">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label class="form-label">Estado placa</label>
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  [(ngModel)]="estadoPlaca"
+                >
+                  <option>Entregada</option>
+                  <option>Pendiente</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label class="form-label">Fecha de inicio</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  [(ngModel)]="fechaInicio"
+                />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label class="form-label">Fecha fin</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  [(ngModel)]="fechaFin"
+                />
+              </div>
+            </div>
+          </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Tipo vehículo</label>
+                  <select
+                    class="form-select"
+                    aria-label="Default select example"
+                    [(ngModel)]="tipoVehiculo"
+                  >
+                    <option *ngFor="let vehiculo of tipoVehiculos">
+                      {{ vehiculo.tipo }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Tipo placa</label>
+                  <select
+                    class="form-select"
+                    aria-label="Default select example"
+                    [(ngModel)]="tipoPlaca"
+                  >
+                    <option *ngFor="let placa of tiposPlacas">
+                      {{ placa.tipo }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            
+            </div>
+            <div class="row">
+              <div class="col-md-2">
+                <br />
+                <button
+                  class="btn btn-primary form-group"
+                  (click)="filtroPlacas()"
+                >
+                  Filtrar
+                </button>
+              </div>
+              <div class="col-md-4">
+                <br>
+                <button
+                class="btn btn-danger form-group"
+                (click)="resetPlacas()"
+              >
+                Restablecer
+              </button>
+              </div>
+            </div>
+          </div>
+          <div class="boton">
+            <button
+              class="btn col col-lg-4 btn-danger btn-block ml-4"
+              (click)="getPDF()"
+              *ngIf="placasFiltradas.length > 0"
+            >
+              Descargar PDF
+            </button>
+          </div>
+          <div class="centrado">
+            <div class="cont-html">
+              <div class="modal-body canvas_div_pdf">
+                <div class="">
+                  <div class="container">
+                    <div class="row">
+                      <div id="htmlData">
+                        <div class="row">
+                          <div class="col-md-2"></div>
+                          <div class="col-md-8">
+                            <div style="text-align: center">
+                              <h5>EMPRESA PUBLICA MANCOMUNADA</h5>
+                              <h6>
+                                San Pedro de Pelileo - Calle Pelileo Inmortal y
+                                Cucaray
+                              </h6>
+                              <label style="text-decoration: underline"
+                                >www.transitotungurahua.gob.ec</label
+                              >
+                              <h6>Archivo - Bodega</h6>
+                            </div>
+                          </div>
+                          <div class="col-md-2 cont-icono">
+                            <img
+                              class="img-icono"
+                              src="./assets/img/logo.png"
+                              alt=""
+                            />
+                          </div>
+                        </div>
+                        <div class="row datos-generales">
+                          <div class="row">
+                            <div class="col-md-4">
+                              <h6>Fecha: {{ fecha | date : short }}</h6>
+                            </div>
+                            <div class="col-md-4">
+                              <h6 *ngIf="tipoPlaca != ''">
+                                Tipo placa: {{ tipoPlaca }}
+                              </h6>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-4">
+                              <h6>Usuario: {{ usuario }}</h6>
+                            </div>
+                            <div class="col-md-4">
+                              <h6 *ngIf="tipoVehiculo != ''">
+                                Tipo vehículo: {{ tipoVehiculo }}
+                              </h6>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-4">
+                              <h6>
+                                <h6 *ngIf="estadoPlaca != ''">
+                                  Estado placa: {{ estadoPlaca }}
+                                </h6>
+                              </h6>
+                            </div>
+                            <div class="col-md-4"></div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-4">
+                              <h6
+                                *ngIf="
+                                  fechaInicio != undefined &&
+                                  fechaFin != undefined
+                                "
+                              >
+                                Desde: {{ fechaInicio }} Hasta:{{ fechaFin }}
+                              </h6>
+                              <h6
+                                *ngIf="
+                                  fechaInicio != undefined &&
+                                  fechaFin === undefined
+                                "
+                              >
+                                Fecha busqueda: {{ fechaInicio }}
+                              </h6>
+                            </div>
+                            <div class="col-md-4"></div>
+                          </div>
+                        </div>
+                        <div class="tabla-placas">
+                          <table
+                            class="table table-hover"
+                            style="text-align: center"
+                          >
+                            <thead>
+                              <tr>
+                                <th *ngFor="let encabezado of encabezadoPlacas">
+                                  {{ encabezado }}
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr
+                                *ngFor="
+                                  let placa of placasFiltradas;
+                                  let i = index
+                                "
+                              >
+                                <td>{{ i + 1 }}</td>
+                                <td>{{ placa.placa }}</td>
+                                <td>{{ placa.propietario }}</td>
+                                <td>{{ placa.cedula }}</td>
+
+                                <td>{{ placa.usuario }}</td>
+                                <td>
+                                  {{ placa.fecha_ingreso | date : short }}
+                                </td>
+                                <td>
+                                  {{
+                                    placa.fecha_modificacion === null
+                                      ? "No modificado"
+                                      : (placa.fecha_modificacion
+                                        | date : short)
+                                  }}
+                                </td>
+                              </tr>
+                              <tr *ngIf="placasFiltradas.length === 0">
+                                <td colspan="11">
+                                  <div
+                                    class="table-responsive table-full-width"
+                                    style="text-align: center"
+                                  >
+                                    <img
+                                      src="assets/img/no-documentos.png"
+                                      alt=""
+                                    />
+                                    <br />
+                                    <label>No se encontraron registros</label>
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-azul btn-fill"
+        (click)="cerrarModal()"
+      >
+        Cancelar
+      </button>
+    </div>
+  </div>
+</ng-template>

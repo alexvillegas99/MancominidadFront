@@ -1,268 +1,325 @@
 <div class="main-content">
-    <div class="container-fluid">
-      <!-- formulario principal socios -->
-      <div class="card">
-        <div class="header">
-          <button class="btn btn-azul btn-fill" (click)="open(modalActa)" *ngIf="rol==='admin'">
-            <i class="fa fa-plus"></i> Agregar Acta
-          </button>
-        </div>
-        <div class="content table-responsive table-full-width">
-          <div class="box">
-            <div class="container-4">
-              <input
-                style="width: 100% !important"
-                type="search"
-                (keyup)="buscarActas()"
-                id="search"
-                [(ngModel)]="buscar"
-                placeholder="Buscar..."
-                
-              />
-              <button class="icon"><i class="fa fa-search"></i></button>
-            </div>
-          </div>
-          <table class="table table-hover" style="text-align: center">
-            <thead>
-              <tr>
-                <th *ngFor="let encabezado of encabezados">{{ encabezado }}</th>
-                <th *ngIf="rol==='admin'">Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                *ngFor="
-                  let acta of actasFiltradas
-                    | slice: (page - 1) * pageSize:page * pageSize;
-                  let i = index
-                "
-              >
-                <td>{{ i + 1 }}</td>
-                <td>{{ acta.numero_acta }}</td>
-                <td>{{ acta.detalle }}</td>
-                <td >{{acta.numero_placa}}</td>
-                <td >{{acta.nombre}}</td>
-                <td >{{acta.cedula}}</td>
-                <td >{{acta.dia + "/"+ acta.mes +"/" +acta.anio}}</td>
-                <td >{{acta.user}}</td>
-                <td > 
-                  <button
-                    (click)="open(modalActa, acta)"
-                    class="btn btn-verde btn-fill"
-                  >
-                    <i class="fa fa-eye"></i>
-                  </button>
-                
-                </td>
-              </tr>
-              <tr *ngIf="actasFiltradas.length===0">
-                <td colspan="10">
-                <div
-                class="table-responsive table-full-width"
-                style="text-align: center"
-              
-              >
-                <img src="./assets/img/no-documentos.png" alt="" />
-                <br />
-                <label>No se encontraron registros</label>
-              </div>
-            </td>
-            </tr>
-            </tbody>
-          </table>
-          <ngb-pagination
-            [collectionSize]="actasFiltradas.length"
-            [(page)]="page"
-            aria-label="Default pagination"
-          ></ngb-pagination>
-        </div>
+  <div class="container-fluid">
+    <div class="card">
+      <div class="header">
+        <button
+          class="btn btn-azul btn-fill"
+          (click)="open(modalActa)"
+          
+        >
+          <i class="fa fa-plus"></i> Agregar Acta
+        </button>
       </div>
-      <!-- Agregar usuario -->
-      <ng-template #modalActa let-modal>
-        <div class="main-content">
-          <div class="container-fluid">
-            <div class="modal-header">
-              <h4 class="title" *ngIf="actaSeleccionada === undefined">
-                Crear acta
-              </h4>
-              <h4 class="title" *ngIf="actaSeleccionada != undefined">
-                Revisar acta
-              </h4>
-              <button
-                type="button"
-                class="close"
-                aria-label="Close"
-                (click)="cerrarModal()"
+      <div class="content table-responsive table-full-width">
+        <div class="box">
+          <div class="container-4">
+            <input
+              style="width: 100% !important"
+              type="search"
+              (keyup)="buscarActas()"
+              id="search"
+              [(ngModel)]="buscar"
+              placeholder="Buscar..."
+            />
+            <button class="icon"><i class="fa fa-search"></i></button>
+          </div>
+        </div>
+        <table class="table table-hover" style="text-align: center">
+          <thead>
+            <tr>
+              <th *ngFor="let encabezado of encabezados">{{ encabezado }}</th>
+              <th *ngIf="rol === 'admin'">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let acta of actasFiltradas
+                  | slice : (page - 1) * pageSize : page * pageSize;
+                let i = index
+              "
+            >
+              <td>{{ i + 1 }}</td>
+              <td>{{ acta.numero_acta }}</td>
+              <td>{{ acta.detalle }}</td>
+              <td>{{ acta.numero_placa }}</td>
+              <td>{{ acta.nombre }}</td>
+              <td>{{ acta.cedula }}</td>
+              <td>{{ acta.dia + "/" + acta.mes + "/" + acta.anio }}</td>
+              <td>{{ acta.user }}</td>
+              <td>
+                <button
+                  (click)="open(modalActa, acta)"
+                  class="btn btn-verde btn-fill"
+                >
+                  <i class="fa fa-eye"></i>
+                </button>
+                <button
+                *ngIf="rol==='admin'"
+                (click)="eliminarActa(acta)"
+                class="btn btn-rojo btn-fill"
               >
-                <span aria-hidden="true">&times;</span>
+                <i class="fa fa-trash"></i>
               </button>
-            </div>
-            <div class="modal-body">
-                <div class="card">
-                    <div class="content table-responsive table-full-width">
-                        <div class="row" *ngIf="actaSeleccionada===undefined">
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label class="form-label">Nombre</label>
-                                    <input type="text" class="form-control" [(ngModel)]="nombre">
-                                  </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label class="form-label">Cedula</label>
-                                    <input type="text" class="form-control" [(ngModel)]="cedula">
-                                  </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label class="form-label">Número de placa</label>
-                                    <input type="text" class="form-control" [(ngModel)]="numero_placa">
-                                  </div>
-                            </div>
-                           
-                        </div>
-                        <div class="row" *ngIf="actaSeleccionada===undefined">
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label class="form-label">Cantidad</label>
-                                    <input type="text" class="form-control" [(ngModel)]="cantidad">
-                                  </div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="mb-3">
-                                    <label class="form-label">Detalle</label>
-                                    <input type="text" class="form-control" [(ngModel)]="detalle">
-                                  </div>
-                            </div>
-                           
-                        </div>
-                        <div class="row" *ngIf="actaSeleccionada===undefined">
-                          <div class="col-md-12">
-                              <div class="mb-3">
-                                  <label class="form-label">Numero de acta: </label>
-                                  ACTA N° B0D-{{mes | uppercase}}-{{numero_acta}}-{{anio}}<br><br>
-                                </div>
-                          </div>
-                         
-                         
-                      </div>
-                        <div class="boton" *ngIf="actaSeleccionada!=undefined">
-                        <button
-                        class="btn col col-lg-4 btn-danger btn-block ml-4"
-                        (click)="getPDF()"
-                      >
-                        Descargar PDF
-                      </button>
+              <button
+              *ngIf="rol==='admin'"
+              (click)="editarActa(modalActa, acta)"
+              class="btn btn-azul btn-fill"
+            >
+              <i class="fa fa-edit"></i>
+            </button>
+              </td>
+            </tr>
+            <tr *ngIf="actasFiltradas.length === 0">
+              <td colspan="10">
+                <div
+                  class="table-responsive table-full-width"
+                  style="text-align: center"
+                >
+                  <img src="./assets/img/no-documentos.png" alt="" />
+                  <br />
+                  <label>No se encontraron registros</label>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <ngb-pagination
+          [collectionSize]="actasFiltradas.length"
+          [(page)]="page"
+          aria-label="Default pagination"
+        ></ngb-pagination>
+      </div>
+    </div>
+
+    <ng-template #modalActa let-modal>
+      <div class="main-content">
+        <div class="container-fluid">
+          <div class="modal-header">
+            <h4 class="title" *ngIf="actaSeleccionada === undefined">
+              Crear acta
+            </h4>
+            <h4 class="title" *ngIf="actaSeleccionada != undefined">
+              Revisar acta
+            </h4>
+            <button
+              type="button"
+              class="close"
+              aria-label="Close"
+              (click)="cerrarModal()"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="card">
+              <div class="content table-responsive table-full-width">
+                <div class="row" *ngIf="actaSeleccionada === undefined">
+                  <div class="col-md-4">
+                    <div class="mb-3">
+                      <label class="form-label" >Número de placa</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="numero_placa"
+                        (keyup)="buscarDatos()"
+                      />
+
+                     
                     </div>
-                        <div class="centrado" *ngIf="actaSeleccionada!=undefined">
-            
-                      <div class="cont-html">
-                        <div class="modal-body canvas_div_pdf">
-                            <div class="">
-                              <div class="container">
-                                <div class="row">
-                                  <div id="htmlData">
-                                    <div class="row">
-                                      <div class="col-md-2" >
-                                       
-                                      </div>
-                                      <div class="col-md-8">
-                                        <div style="text-align: center">
-                                          <h5>EMPRESA PUBLICA MANCOMUNADA</h5>
-                                          <h6>San Pedro de Pelileo - Calle Pelileo Inmortal y Cucaray</h6>
-                                          <label  style="text-decoration: underline;">www.transitotungurahua.gob.ec</label>
-                                          <h6>Archivo - Bodega</h6>
-                                        </div>
-                                      </div>
-                                      <div class="col-md-2 cont-icono">
-                                        <img class="img-icono"  src="./assets/img/logo.png" alt="">
-                                      </div>
-                                    </div>
-                                    <div class="numero-acta">
-                                        ACTA N° B0D-{{mes | uppercase}}-{{numero_acta}}-{{anio}}<br><br>
-                                    </div>
-                                    <div class="entrega">
-                                        EPM - GESTITRANSV-T-ARCHIVO <br> <br>
-                                        ACTA ENTREGA - RECEPCIÓN <br><br>
-                                    </div>
-                                    <div class="contenido">
-                                        En la ciudad de San Pedro de Pelileo, al {{dia}} de {{mes}} del {{anio}} comparecen, por una parte   {{ usuario| uppercase}}
-                                        quien entrega y el Sr(ita) {{nombre | uppercase}} con CI. {{cedula}} suscriben la presente acta de 
-                                        entreha de la placa:
-                                        <br><br>
-                                        <table class="table table-bordered ">
-                                            <thead>
-                                              <tr>
-                                                <th class="col-md-2">CANTIDAD</th>
-                                                <th class="col-md-8">DETALLE</th>
-                                                <th class="col-md-2">N° DE PLACA</th>
-                                              </tr>
-                                            </thead>
-                                            <tbody>
-                                              <tr>
-                                                <th >{{cantidad}}</th>
-                                                <td>{{detalle | uppercase}}</td>
-                                                <td>{{numero_placa | uppercase}}</td>
-                                              </tr>
-                                            </tbody>
-                                          </table>
-                                          <br>
-                                          Para constancia de lo antes indicado firman la presente acta de partes por diplicado de igual tenor.
-                                          <br>
-                                    </div>
-                                <div class="pie-pagina">
-                                        <div class="row">
-                                            <div class="col-md-6">ENTREGUE CONFORME</div>
-                                            <div class="col-md-6">RECIBÍ CONFORME</div>
-                                        </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                ---------------------------------- <br>
-                                               {{ usuario| uppercase}}<br>
-                                                TRÁNSITO TUNGURAHUA
-                                            </div>
-                                            <div class="col-md-6">
-                                                ---------------------------------- <br>
-                                               {{nombre | uppercase}}<br>
-                                                CI. {{cedula}}
-                                            </div>
-                                        </div>
-                                    
+                  </div>
+                  <div class="col-md-4">
+                    <div class="mb-3">
+                      <label class="form-label">Cedula</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="cedula"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="mb-3">
+                      <label class="form-label">Nombre</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="nombre"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row" *ngIf="actaSeleccionada === undefined">
+                  <div class="col-md-4">
+                    <div class="mb-3">
+                      <label class="form-label">Cantidad</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="cantidad"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="mb-3">
+                      <label class="form-label">Detalle</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="detalle"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row" *ngIf="actaSeleccionada === undefined">
+                  <div class="col-md-4">
+                    <div class="mb-3">
+                      <label class="form-label">Número de acta</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="numero_acta"
+                      />
+                    </div>
+                  </div>
+                 
+                </div>
+                <div class="row" *ngIf="actaSeleccionada === undefined">
+                  <div class="col-md-12">
+                    <div class="mb-3">
+                      <label class="form-label">Numero de acta: </label>
+                      ACTA N° BOD-{{ mes | uppercase }}-{{ numero_acta }}-{{
+                        anio
+                      }}<br /><br />
+                    </div>
+                  </div>
+                </div>
+                <div class="boton" *ngIf="actaSeleccionada != undefined">
+                  <button
+                    class="btn col col-lg-4 btn-danger btn-block ml-4"
+                    (click)="getPDF()"
+                  >
+                    Descargar PDF
+                  </button>
+                </div>
+                <div class="centrado" *ngIf="actaSeleccionada != undefined">
+                  <div class="cont-html">
+                    <div class="modal-body canvas_div_pdf">
+                      <div class="">
+                        <div class="container">
+                          <div class="row">
+                            <div id="htmlData">
+                              <div class="row">
+                                <div class="col-md-2"></div>
+                                <div class="col-md-8">
+                                  <div style="text-align: center">
+                                    <h5>EMPRESA PUBLICA MANCOMUNADA</h5>
+                                    <h6>
+                                      San Pedro de Pelileo - Calle Pelileo
+                                      Inmortal y Cucaray
+                                    </h6>
+                                    <label style="text-decoration: underline"
+                                      >www.transitotungurahua.gob.ec</label
+                                    >
+                                    <h6>Archivo - Bodega</h6>
+                                  </div>
                                 </div>
-                                  
+                                <div class="col-md-2 cont-icono">
+                                  <img
+                                    class="img-icono"
+                                    src="./assets/img/logo.png"
+                                    alt=""
+                                  />
+                                </div>
+                              </div>
+                              <div class="numero-acta">
+                                ACTA N° BOD-{{ mes | uppercase }}-{{
+                                  numero_acta
+                                }}-{{ anio }}<br /><br />
+                              </div>
+                              <div class="entrega">
+                                EPM - GESTITRANSV-T-ARCHIVO <br />
+                                <br />
+                                ACTA ENTREGA - RECEPCIÓN <br /><br />
+                              </div>
+                              <div class="contenido">
+                                En la ciudad de San Pedro de Pelileo, al
+                                {{ dia }} de {{ mes }} del
+                                {{ anio }} comparecen, por una parte
+                                {{ usuario | uppercase }} quien entrega y el
+                                Sr(ita) {{ nombre | uppercase }} con CI.
+                                {{ cedula }} suscriben la presente acta de
+                                entreha de la placa: <br /><br />
+                                <table class="table table-bordered">
+                                  <thead>
+                                    <tr>
+                                      <th class="col-md-2">CANTIDAD</th>
+                                      <th class="col-md-8">DETALLE</th>
+                                      <th class="col-md-2">N° DE PLACA</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <th>{{ cantidad }}</th>
+                                      <td>{{ detalle | uppercase }}</td>
+                                      <td>{{ numero_placa | uppercase }}</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                                <br />
+                                Para constancia de lo antes indicado firman la
+                                presente acta de partes por diplicado de igual
+                                tenor.
+                                <br />
+                              </div>
+                              <div class="pie-pagina">
+                                <div class="row">
+                                  <div class="col-md-6">ENTREGUE CONFORME</div>
+                                  <div class="col-md-6">RECIBÍ CONFORME</div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    ---------------------------------- <br />
+                                    {{ usuario | uppercase }}<br />
+                                    TRÁNSITO TUNGURAHUA
+                                  </div>
+                                  <div class="col-md-6">
+                                    ---------------------------------- <br />
+                                    {{ nombre | uppercase }}<br />
+                                    CI. {{ cedula }}
                                   </div>
                                 </div>
                               </div>
                             </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                </div>
-                </div>
                   </div>
-              
-                
                 </div>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-azul btn-fill"
-                (click)="cerrarModal()"
-              >
-                Cancelar
-              </button>
-              <button
-                type="button"
-                class="btn btn-verde btn-fill"
-                *ngIf="actaSeleccionada===undefined"
-                (click)="guardarActa()"
-              >
-                Guardar
-              </button>
+              </div>
             </div>
           </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-azul btn-fill"
+              (click)="cerrarModal()"
+            >
+              Cancelar
+            </button>
+            <button
+              type="button"
+              class="btn btn-verde btn-fill"
+              *ngIf="actaSeleccionada === undefined"
+              (click)="guardarActa()"
+            >
+              Guardar
+            </button>
+          </div>
         </div>
-      </ng-template>
-    </div>
+      </div>
+    </ng-template>
   </div>
-  
+</div>

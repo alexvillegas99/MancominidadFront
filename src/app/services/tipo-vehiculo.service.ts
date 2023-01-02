@@ -11,7 +11,7 @@ export class TipoVehiculoService {
   constructor(private http: HttpClient) { 
    
   }
-  getTipoPlaca(): Observable<TipoVehiculo[]>{
+  getTipoVehiculo(): Observable<TipoVehiculo[]>{
     let options = this.createRequestOptions();
     return this.http.get<TipoVehiculo[]>(`${environment.api_URL}/tipo_vehiculo`,{ headers: options });
 

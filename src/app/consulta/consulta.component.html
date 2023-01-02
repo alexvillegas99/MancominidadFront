@@ -1,1 +1,28 @@
-<p>consulta works!</p>
+<div class="wrapper fadeInDown">
+
+    <div id="formContent">
+      <!-- Tabs Titles -->
+     
+      <!-- Icon -->
+      <div class="fadeIn first">
+        <img style="width: 300px; margin-top: 40px;" src="./assets/img/logo2.png" alt="">
+      </div>
+  
+      <!-- Login Form -->
+      <form [formGroup]="placaForm" (ngSubmit)="consulta()">
+        <input type="text" id="usuario" formControlName="placa" class="fadeIn second" placeholder="Placa">
+        <br>
+        <span class="text-danger"
+        *ngIf="placaForm.get('usuario')?.hasError('placa') && placaForm.get('placa')?.touched">
+        El usuario  <strong>es requerido.</strong>
+        </span>
+        <input  type="submit" [disabled]='placaForm.invalid' class="fadeIn fourth" value="Consultar" > 
+      </form>
+  
+      <!-- Remind Passowrd -->
+     <!--  <div id="formFooter">
+     <a class="underlineHover" href="#">Olvido su contraseña?</a> 
+      </div> -->
+  
+    </div>
+  </div>

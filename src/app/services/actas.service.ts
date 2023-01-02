@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Actas } from "app/models/actas.interface";
+import { Actas, ReporteActas } from "app/models/actas.interface";
 import { environment } from "environments/environment";
 import { Observable } from "rxjs";
 
@@ -9,9 +9,15 @@ import { Observable } from "rxjs";
 })
 export class ActasService {
   constructor(private http: HttpClient) {}
-  getActas(): Observable<Actas[]> {
+  getActas(): Observable<Actas[]> { 
     let options = this.createRequestOptions();
     return this.http.get<Actas[]>(`${environment.api_URL}/actas`, {
+      headers: options,
+    });
+  }
+  getActasReportes(): Observable<ReporteActas[]> {
+    let options = this.createRequestOptions();
+    return this.http.get<ReporteActas[]>(`${environment.api_URL}/actas/reporteActas`, {
       headers: options,
     });
   }
@@ -48,7 +54,8 @@ export class ActasService {
     let token = localStorage.getItem("token");
     let headers = new HttpHeaders({
       "Content-Type": "application/json",
-      auth: token,
+    
+       auth: token,
     });
     return headers;
   }

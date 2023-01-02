@@ -9,6 +9,9 @@ import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { Actas } from "app/models/actas.interface";
 import { ActasService } from "app/services/actas.service";
 import { NotificacionService } from "app/services/notificacion.service";
+import { PlacaService } from "app/services/placa.service";
+import { Placa } from "app/models/placa.interface";
+import Swal from "sweetalert2";
 @Component({
   selector: "app-actas-entrega",
   templateUrl: "./actas-entrega.component.html",
@@ -19,11 +22,15 @@ export class ActasEntregaComponent implements OnInit {
   constructor(
     private _modalService: NgbModal,
     private _actasService: ActasService,
-    private _notificacion: NotificacionService
+    private _notificacion: NotificacionService,
+    private _placaService: PlacaService
   ) {}
+  existe: boolean = false;
   actas: Actas[];
+  placa: Placa = undefined;
   actasFiltradas: Actas[] = [];
   actaSeleccionada: Actas = undefined;
+  actaEditar:Actas = undefined;
   nombre = "";
   cedula = "";
   numero_placa = "";
@@ -39,6 +46,7 @@ export class ActasEntregaComponent implements OnInit {
   page = 1;
   pageSize = 10;
   rol = localStorage.getItem("rol");
+  
   encabezados: string[] = [
     "#",
     "Numero acta",
@@ -58,7 +66,7 @@ export class ActasEntregaComponent implements OnInit {
     });
   }
   getPDF() {
-    const nombre: string = `ACTA N° B0D-${this.mes.toUpperCase()}-${
+    const nombre: string = `ACTA N° BOD-${this.mes.toUpperCase()}-${
       this.numero_acta
     }-${this.anio}`;
     var HTML_Width = $(".canvas_div_pdf").width();
@@ -117,10 +125,15 @@ export class ActasEntregaComponent implements OnInit {
       this.usuario = this.actaSeleccionada.user;
       this.numero_acta = this.actaSeleccionada.numero_acta;
     } else {
-      const resultado = this.actas.sort((a, b) => {
-        return Number.parseInt(b.numero_acta) - Number.parseInt(a.numero_acta);
-      });
-      this.numero_acta = String(Number(resultado[0].numero_acta) + 1);
+      if(this.actas.length===0){
+        this.numero_acta = '1';
+      }else{
+        let resultado = this.actas.sort((a, b) => {
+          return Number.parseInt(b.numero_acta) - Number.parseInt(a.numero_acta);
+        }); 
+      
+        this.numero_acta = String(Number(resultado[0].numero_acta) + 1);
+      }
       const date = new Date();
       this.anio = date.getFullYear().toString();
       this.dia = date.getDate().toString();
@@ -138,6 +151,7 @@ export class ActasEntregaComponent implements OnInit {
   cerrarModal() {
     this.modal.close();
     this.actaSeleccionada = undefined;
+    this.actaEditar=undefined;
     this.nombre = "";
     this.cedula = "";
     this.numero_placa = "";
@@ -148,6 +162,7 @@ export class ActasEntregaComponent implements OnInit {
     this.anio = "";
     this.usuario = "";
     this.numero_acta = "";
+    this.placa = undefined;
   }
   buscarActas() {
     if (this.buscar === "") {
@@ -159,31 +174,150 @@ export class ActasEntregaComponent implements OnInit {
     });
   }
   guardarActa() {
-    if (
-      this.nombre != "" &&
-      this.cedula != "" &&
-      this.numero_acta != "" &&
-      this.cantidad != "" &&
-      this.detalle != ""
-    ) {
-      const object = {
-        nombre: this.nombre,
-        cedula: this.cedula,
-        numero_acta: this.numero_acta,
-        numero_placa: this.numero_placa,
-        cantidad: this.cantidad,
-        detalle: this.detalle,
-        anio: this.anio,
-        mes: this.mes,
-        dia: this.dia,
-        usuario: localStorage.getItem("userId"),
-      };
-      this._actasService.saveActa(object).subscribe((result) => {
-        this.getActas();
-        this.cerrarModal();
-      });
-    } else {
-      this._notificacion.showNotification("Completar los datos", "danger");
-    }
+    
+      if (
+        this.nombre != "" &&
+        this.cedula != "" &&
+        this.numero_acta != "" &&
+        this.cantidad != "" &&
+        this.detalle != ""
+      ) {
+        if(this.actaEditar===undefined){
+          if (this.existe) {
+          const object = {
+            nombre: this.nombre,
+            cedula: this.cedula,
+            numero_acta: this.numero_acta,
+            numero_placa: this.placa.id,
+            cantidad: this.cantidad,
+            detalle: this.detalle,
+            anio: this.anio,
+            mes: this.mes,
+            dia: this.dia,
+            usuario: localStorage.getItem("userId"),
+          };
+          this._actasService.saveActa(object).subscribe((result) => {
+            const actualizarPlaca = {
+              estado: true,
+            };
+            this._placaService
+              .editPlaca(this.placa.id, actualizarPlaca)
+              .subscribe((result) => {
+                this.getActas();
+                this.cerrarModal();
+              });
+          });
+        } else {
+          this._notificacion.showNotification(
+            "Ingrese una placa que se encuentre registrada  ",
+            "danger"
+          );
+        }
+        }else{
+          
+          const object = {
+            nombre: this.nombre,
+            cedula: this.cedula,
+            numero_acta: this.numero_acta,
+            numero_placa: this.actaEditar.id_placa,
+            cantidad: this.cantidad,
+            detalle: this.detalle,
+            anio: this.anio,
+            mes: this.mes,
+            dia: this.dia,
+            usuario: localStorage.getItem("userId"),
+          };
+          this._actasService.editActa(this.actaEditar.id,object).subscribe((result) => {
+            const actualizarPlaca = {
+              estado: true,
+            };
+            this._placaService
+              .editPlaca(this.actaEditar.id_placa, actualizarPlaca)
+              .subscribe((result) => {
+                this.getActas();
+                this.cerrarModal();
+              });
+          });
+        }
+      } else {
+        this._notificacion.showNotification("Completar los datos", "danger");
+      }
+    
   }
+  buscarDatos() {
+    this._placaService.getPlaca(this.numero_placa).subscribe(
+      (result) => {
+        if (result.estado) {
+          this._notificacion.showNotification(
+            "La placa ya a sido ingresada",
+            "danger"
+          );
+          this.existe = false;
+          this.nombre = "";
+          this.cedula = "";
+        } else {
+          this.existe = true;
+          this.placa = result;
+          this.nombre = result.propietario;
+          this.cedula = result.cedula;
+        }
+      },
+      (err) => {
+        this.placa = undefined;
+        this.existe = false;
+        this.nombre = "";
+        this.cedula = "";
+      }
+    );
+  }
+  eliminarActa(acta: Actas) {
+    Swal.fire({
+      title: "Eliminar placa",
+      showCancelButton: true,
+      confirmButtonText: "Aceptar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this,
+          this._actasService.deleteActa(acta.id).subscribe((result) => {
+            this._placaService
+              .editPlaca(acta.id_placa, { estado: false })
+              .subscribe((result) => {
+                if (result.message === "Ok") {
+                  this._notificacion.showNotification(
+                    "Acta eliminada exitosamente",
+                    "success"
+                  );
+                  this.getActas();
+                  this.cerrarModal();
+                  return;
+                }
+              });
+          });
+      }
+    });
+  }
+  editarActa(content, acta?: Actas): void {
+   
+      this.actaEditar=acta;
+      this.nombre = acta.nombre;
+      this.cedula = acta.cedula;
+      this.numero_placa = acta.numero_placa;
+      this.cantidad = acta.cantidad;
+      this.detalle = acta.detalle;
+      this.usuario = acta.user;
+      this.numero_acta = acta.numero_acta;
+      const date = new Date();
+      this.anio = date.getFullYear().toString();
+      this.dia = date.getDate().toString();
+      this.mes = new Intl.DateTimeFormat("es-ES", { month: "long" }).format(
+        new Date()
+      );
+      this.modal = this._modalService.open(content, {
+        ariaLabelledBy: "modal-basic-title",
+        size: "lg",
+        centered: true,
+      });
+      this.modal.result.then((result) => {});
+    }
 }
+

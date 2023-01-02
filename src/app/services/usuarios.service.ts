@@ -23,7 +23,7 @@ export class UsuariosService {
   saveUsuario(usuario: Usuario): any {
     let options = this.createRequestOptions();
     return this.http.post<Usuario[]>(
-      `${environment.api_URL}/usuarios`,
+      `${environment.api_URL}/usuario`,
       usuario,
       { headers: options }
     );

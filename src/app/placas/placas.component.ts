@@ -27,7 +27,7 @@ export class PlacasComponent implements OnInit {
   pageSize = 10;
   placaSeleccionada: Placa = undefined;
   placas: Placa[] = [];
-  plcasFiltradas: Placa[] = [];
+  placasFiltradas: Placa[] = [];
   idPlaca = null;
   buscar: string = "";
   tipoPlacas: TipoPlaca[] = [];
@@ -51,7 +51,7 @@ export class PlacasComponent implements OnInit {
     this.getTipoVehiculo();
   }
   getTipoVehiculo() {
-    this._tipoVehiculoService.getTipoPlaca().subscribe((result) => {
+    this._tipoVehiculoService.getTipoVehiculo().subscribe((result) => {
       this.tipoVehiculos = result;
     });
   }
@@ -62,7 +62,7 @@ export class PlacasComponent implements OnInit {
   }
   getPlacas() {
     this._placaService.getPlacas().subscribe((result) => {
-      this.plcasFiltradas = this.placas = result;
+      this.placasFiltradas = this.placas = result;
     });
   }
   buscarPlaca() {}
@@ -193,11 +193,11 @@ export class PlacasComponent implements OnInit {
   }
   buscarPlacas() {
     if (this.buscar === "") {
-      this.plcasFiltradas = this.placas;
+      this.placasFiltradas = this.placas;
       return;
     }
     this._placaService.buscarPlaca(this.buscar).subscribe((result) => {
-      this.plcasFiltradas = result;
+      this.placasFiltradas = result;
     });
   }
 }

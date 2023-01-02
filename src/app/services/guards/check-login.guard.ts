@@ -14,7 +14,7 @@ export class CheckLoginGuard implements CanActivate {
       take(1),
       map((isLogget:boolean) => {
         if(isLogget) {
-         this.router.navigate(['/']);
+         this.router.navigate(['/usuarios']);
           return !isLogget
         }else{
 

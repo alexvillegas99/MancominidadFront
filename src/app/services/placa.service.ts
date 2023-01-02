@@ -15,6 +15,12 @@ export class PlacaService {
       headers: options,
     });
   }
+  getPlaca(placa: string) {
+    let options = this.createRequestOptions();
+    return this.http.get<Placa>(`${environment.api_URL}/placa/${placa}`, {
+      headers: options,
+    });
+  }
   savePlaca(placa: Placa): any {
     let options = this.createRequestOptions();
     return this.http.post<Placa>(`${environment.api_URL}/placa`, placa, {
@@ -41,6 +47,14 @@ export class PlacaService {
     return this.http.post<Placa[]>(
       `${environment.api_URL}/placa/buscarPlaca`,
       enviar,
+      { headers: options }
+    );
+  }
+  buscarPlacaConsulta(busqueda: any){
+    let options = this.createRequestOptions();
+    return this.http.post<Placa[]>(
+      `${environment.api_URL}/placa/buscarPlacaConsulta`,
+      busqueda,
       { headers: options }
     );
   }

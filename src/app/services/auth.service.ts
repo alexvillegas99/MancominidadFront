@@ -1,13 +1,12 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User, UserResponse } from 'app/models/user.interface';
 import { environment } from 'environments/environment';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { catchError, map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { NotificacionService } from './notificacion.service';
-import { tryCatch } from 'rxjs/internal-compatibility';
+import { NotificacionService } from './notificacion.service'
 const helper = new JwtHelperService();
 declare var $: any;
 @Injectable({
@@ -23,7 +22,7 @@ export class AuthService {
     return this.loggedId.asObservable();
   }
   login(authData: User): Observable<UserResponse | void> {
-    return this.http.post<UserResponse>(`${environment.api_URL}/auth`, authData)
+    return this.http.post<UserResponse>(`${environment.api_URL}/auth`, authData,{})
       .pipe(
         map((res: UserResponse) => {
           this.guardarCredenciales(res);
