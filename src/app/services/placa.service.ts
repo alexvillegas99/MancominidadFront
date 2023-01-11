@@ -51,11 +51,9 @@ export class PlacaService {
     );
   }
   buscarPlacaConsulta(busqueda: any){
-    let options = this.createRequestOptions();
     return this.http.post<Placa[]>(
       `${environment.api_URL}/placa/buscarPlacaConsulta`,
-      busqueda,
-      { headers: options }
+      busqueda
     );
   }
   private createRequestOptions() {

@@ -28,7 +28,7 @@
           <thead>
             <tr>
               <th *ngFor="let encabezado of encabezados">{{ encabezado }}</th>
-              <th *ngIf="rol === 'admin'">Acciones</th>
+              <th >Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -55,14 +55,12 @@
                   <i class="fa fa-eye"></i>
                 </button>
                 <button
-                *ngIf="rol==='admin'"
                 (click)="eliminarActa(acta)"
                 class="btn btn-rojo btn-fill"
               >
                 <i class="fa fa-trash"></i>
               </button>
               <button
-              *ngIf="rol==='admin'"
               (click)="editarActa(modalActa, acta)"
               class="btn btn-azul btn-fill"
             >
@@ -76,9 +74,7 @@
                   class="table-responsive table-full-width"
                   style="text-align: center"
                 >
-                  <img src="./assets/img/no-documentos.png" alt="" />
-                  <br />
-                  <label>No se encontraron registros</label>
+                <app-spinner></app-spinner>
                 </div>
               </td>
             </tr>
@@ -172,6 +168,18 @@
                   </div>
                 </div>
                 <div class="row" *ngIf="actaSeleccionada === undefined">
+                  <div class="col-md-12">
+                    <div class="mb-3">
+                      <label class="form-label">Observación</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="observacion"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row" *ngIf="actaSeleccionada === undefined">
                   <div class="col-md-4">
                     <div class="mb-3">
                       <label class="form-label">Número de acta</label>
@@ -260,9 +268,18 @@
                                   </thead>
                                   <tbody>
                                     <tr>
-                                      <th>{{ cantidad }}</th>
+                                      <td>{{ cantidad }}</td>
                                       <td>{{ detalle | uppercase }}</td>
                                       <td>{{ numero_placa | uppercase }}</td>
+                                    </tr>
+                                    <tr *ngIf="observacion!=''">
+                                      <td colspan="1" style="font-weight: bold;">
+
+                                        Observación: 
+                                      </td>
+                                      <td colspan="2" style="text-align: left;">
+                                        {{observacion}}
+                                      </td>
                                     </tr>
                                   </tbody>
                                 </table>

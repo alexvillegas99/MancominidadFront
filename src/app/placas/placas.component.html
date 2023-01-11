@@ -1,4 +1,5 @@
 <div class="main-content">
+
     <div class="container-fluid">
       <div class="card">
         <div class="header">
@@ -28,7 +29,7 @@
             <thead>
               <tr>
                 <th *ngFor="let encabezado of encabezados">{{ encabezado }}</th>
-                <th>Acciones</th>
+                <th *ngIf="rol==='admin'">Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -41,8 +42,7 @@
               >
                 <td>{{ i + 1 }}</td>
                 <td>{{ placa.placa }}</td>
-                <td>{{ placa.propietario }}</td>
-                <td>{{ placa.cedula }}</td>
+               
                 <td>{{ placa.tipo_placa  }}</td>
                 <td>{{ placa.tipo_vehiculo  }}</td>
                 <td *ngIf="placa.estado"> <span class="badge btn-verde">Entregado </span></td>
@@ -54,6 +54,7 @@
                   <button
                     (click)="open(modalPlaca, placa)"
                     class="btn btn-verde btn-fill"
+                    *ngIf="rol==='admin'"
                   >
                     <i class="fa fa-edit"></i>
                   </button>
@@ -73,13 +74,13 @@
                 class="table-responsive table-full-width"
                 style="text-align: center"
               
-              >
-                <img src="assets/img/no-documentos.png" alt="" />
-                <br />
-                <label>No se encontraron registros</label>
+              >  
+              <app-spinner></app-spinner>
+                
               </div>
             </td>
             </tr>
+           
             </tbody>
           </table>
           <ngb-pagination
@@ -153,48 +154,6 @@
                         "
                       >
                         El tipo de placa <strong>es requerido.</strong>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label>Propietario</label>
-                      <input
-                      [attr.disabled]="rol!='admin' ? '' : null"
-                        type="text"
-                        formControlName="propietario"
-                        class="form-control"
-                      />
-                      <span
-                        class="text-danger"
-                        *ngIf="
-                        placaForm.get('propietario')?.hasError('required') &&
-                        placaForm.get('propietario')?.touched
-                        "
-                      >
-                        La placa <strong>es requerida.</strong>
-                      </span>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label>Cedula</label>
-                      <input
-                      [attr.disabled]="rol!='admin' ? '' : null"
-                        type="text"
-                        formControlName="cedula"
-                        class="form-control"
-                      />
-                      <span
-                        class="text-danger"
-                        *ngIf="
-                        placaForm.get('cedula')?.hasError('required') &&
-                        placaForm.get('cedula')?.touched
-                        "
-                      >
-                        La placa <strong>es requerida.</strong>
                       </span>
                     </div>
                   </div>

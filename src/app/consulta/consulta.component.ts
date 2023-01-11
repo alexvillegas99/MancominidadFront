@@ -26,6 +26,7 @@ export class ConsultaComponent implements OnInit {
   }
   
   consulta(){
+    console.log(this.placaForm.value)
     this._placaService.buscarPlacaConsulta(this.placaForm.value).subscribe((result)=>{
       console.log(result)
       let titulo="";
@@ -35,7 +36,7 @@ export class ConsultaComponent implements OnInit {
         texto="Estimado usuario, su placa aún no se encuentra registrada";
       }else if(!result[0].estado){
         titulo="Placa en espera";
-        texto=`Requisitos para retirar la placa: Cedula original y matricula del propietario vehiculo`;
+        texto=`Requisitos para retirar la placa: Cedula original y matricula del propietario vehículo`;
       }else{
         titulo="Placa retirada";
         texto="Estimado usuario, su placa fue retirada";

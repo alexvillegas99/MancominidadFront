@@ -268,4 +268,14 @@ html {
       margin-bottom:20px;
     width:40%;
   }
-  
+  @media (max-width: 683px) {
+    .img-ico{
+      width: 150px !important;
+      
+    }
+   
+  }
+  .img-ico{
+    width: 300px; 
+    margin-top: 40px;
+  }

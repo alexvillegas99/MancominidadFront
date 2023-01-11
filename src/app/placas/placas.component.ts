@@ -67,13 +67,10 @@ export class PlacasComponent implements OnInit {
   }
   buscarPlaca() {}
   imprimir() {
-    console.log(this.placaForm.value);
   }
   rol = localStorage.getItem("rol");
   placaForm = this.fb.group({
     placa: ["", Validators.required],
-    propietario: ["", Validators.required],
-    cedula: ["", Validators.required],
     id_tipo_placa: ["", Validators.required],
     id_tipo_vehiculo: ["", [Validators.required]],
     id_usuario_modifico: [""],
@@ -82,8 +79,6 @@ export class PlacasComponent implements OnInit {
   encabezados: string[] = [
     "#",
     "Placa",
-    "Propietario",
-    "Cedula",
     "Tipo de placa",
     "Tipo Vehículo",
     "estado",
@@ -114,12 +109,7 @@ export class PlacasComponent implements OnInit {
       this.placaForm.controls.estado.setValue(
         this.placaSeleccionada.estado ? true : false
       );
-      this.placaForm.controls.propietario.setValue(
-        this.placaSeleccionada.propietario
-      );
-      this.placaForm.controls.cedula.setValue(
-        this.placaSeleccionada.cedula
-      );
+      
     } else {
       this.placaForm.controls.estado.setValue(false);
     }

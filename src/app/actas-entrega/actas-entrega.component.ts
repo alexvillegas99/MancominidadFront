@@ -12,6 +12,7 @@ import { NotificacionService } from "app/services/notificacion.service";
 import { PlacaService } from "app/services/placa.service";
 import { Placa } from "app/models/placa.interface";
 import Swal from "sweetalert2";
+import { NgIf } from "@angular/common";
 @Component({
   selector: "app-actas-entrega",
   templateUrl: "./actas-entrega.component.html",
@@ -37,6 +38,7 @@ export class ActasEntregaComponent implements OnInit {
   numero_acta = "";
   cantidad = "";
   detalle = "";
+  observacion="";
   mes = "";
   dia = "";
   anio = "";
@@ -124,6 +126,7 @@ export class ActasEntregaComponent implements OnInit {
       this.anio = this.actaSeleccionada.anio;
       this.usuario = this.actaSeleccionada.user;
       this.numero_acta = this.actaSeleccionada.numero_acta;
+      this.observacion=this.actaSeleccionada.observacion;
     } else {
       if(this.actas.length===0){
         this.numero_acta = '1';
@@ -160,6 +163,7 @@ export class ActasEntregaComponent implements OnInit {
     this.mes = "";
     this.dia = "";
     this.anio = "";
+    this.observacion="";
     this.usuario = "";
     this.numero_acta = "";
     this.placa = undefined;
@@ -191,6 +195,7 @@ export class ActasEntregaComponent implements OnInit {
             numero_placa: this.placa.id,
             cantidad: this.cantidad,
             detalle: this.detalle,
+            observacion:this.observacion,
             anio: this.anio,
             mes: this.mes,
             dia: this.dia,
@@ -208,10 +213,8 @@ export class ActasEntregaComponent implements OnInit {
               });
           });
         } else {
-          this._notificacion.showNotification(
-            "Ingrese una placa que se encuentre registrada  ",
-            "danger"
-          );
+          this.mensajeError("Ingrese una placa que se encuentre registrada")
+          
         }
         }else{
           
@@ -222,6 +225,7 @@ export class ActasEntregaComponent implements OnInit {
             numero_placa: this.actaEditar.id_placa,
             cantidad: this.cantidad,
             detalle: this.detalle,
+            observacion:this.observacion,
             anio: this.anio,
             mes: this.mes,
             dia: this.dia,
@@ -240,7 +244,7 @@ export class ActasEntregaComponent implements OnInit {
           });
         }
       } else {
-        this._notificacion.showNotification("Completar los datos", "danger");
+        this.mensajeError("Completar los datos")
       }
     
   }
@@ -248,18 +252,13 @@ export class ActasEntregaComponent implements OnInit {
     this._placaService.getPlaca(this.numero_placa).subscribe(
       (result) => {
         if (result.estado) {
-          this._notificacion.showNotification(
-            "La placa ya a sido ingresada",
-            "danger"
-          );
+          this.mensajeError("La placa ya a sido ingresada")
           this.existe = false;
           this.nombre = "";
           this.cedula = "";
         } else {
           this.existe = true;
           this.placa = result;
-          this.nombre = result.propietario;
-          this.cedula = result.cedula;
         }
       },
       (err) => {
@@ -272,7 +271,7 @@ export class ActasEntregaComponent implements OnInit {
   }
   eliminarActa(acta: Actas) {
     Swal.fire({
-      title: "Eliminar placa",
+      title: "Eliminar acta",
       showCancelButton: true,
       confirmButtonText: "Aceptar",
     }).then((result) => {
@@ -306,6 +305,7 @@ export class ActasEntregaComponent implements OnInit {
       this.detalle = acta.detalle;
       this.usuario = acta.user;
       this.numero_acta = acta.numero_acta;
+      this.observacion=acta.observacion
       const date = new Date();
       this.anio = date.getFullYear().toString();
       this.dia = date.getDate().toString();
@@ -318,6 +318,13 @@ export class ActasEntregaComponent implements OnInit {
         centered: true,
       });
       this.modal.result.then((result) => {});
+    }
+    mensajeError(titulo:string) {
+      Swal.fire({
+        title: titulo,
+        icon:'error',
+        confirmButtonText: "Aceptar",
+      });
     }
 }
 

@@ -11,6 +11,7 @@ export interface Actas {
   mes: string;
   anio: string;
   user:string;
+  observacion:string;
 }
 export interface ReporteActas {
   id: number;
@@ -27,4 +28,5 @@ export interface ReporteActas {
   tipo_placa: string;
   tipo_vehiculo: string;
   fecha_modificacion:Date;
+  observacion:string;
 }

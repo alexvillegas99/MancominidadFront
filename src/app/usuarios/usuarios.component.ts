@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
 import {
   NgbModal,
   NgbModalConfig,
@@ -33,7 +34,8 @@ export class UsuariosComponent implements OnInit {
     private _modalService: NgbModal,
     private fb: FormBuilder,
     private _notificacion: NotificacionService,
-    private _rolesServices: RolesService
+    private _rolesServices: RolesService,
+    private router: Router,
   ) {
     config.backdrop = "static";
     config.keyboard = false;
@@ -57,6 +59,9 @@ export class UsuariosComponent implements OnInit {
   ];
 
   ngOnInit(): void {
+    if(this.rol!='admin'){
+      this.router.navigate(["/placas"]);
+    }
     this.getUsuarios();
     this.getRoles();
   }

@@ -5,5 +5,6 @@
 
 export const environment = {
   production: false,
-  api_URL:'https://sistemaplacas.transitotungurahua.gob.ec', 
+  /* api_URL:'https://sistemaplacas.transitotungurahua.gob.ec',  */
+ api_URL:'http://localhost:3000' 
 };

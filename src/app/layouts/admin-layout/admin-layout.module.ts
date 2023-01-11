@@ -14,6 +14,7 @@ import { UsuariosComponent } from "app/usuarios/usuarios.component";
 import { PlacasComponent } from "app/placas/placas.component";
 import { UserComponent } from "app/user/user.component";
 import { ActasEntregaComponent } from "app/actas-entrega/actas-entrega.component";
+import { SpinnerComponent } from "app/shared/spinner/spinner.component";
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { ActasEntregaComponent } from "app/actas-entrega/actas-entrega.component
     ReactiveFormsModule,
     LbdModule,
     NgbModule,
+
   ],
   declarations: [
     HomeComponent,
@@ -30,7 +32,8 @@ import { ActasEntregaComponent } from "app/actas-entrega/actas-entrega.component
     UsuariosComponent,
     PlacasComponent,
     UserComponent,
-    ActasEntregaComponent
+    ActasEntregaComponent,
+    SpinnerComponent
   ],
 })
 export class AdminLayoutModule {}
