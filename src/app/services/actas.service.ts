@@ -54,9 +54,10 @@ export class ActasService {
     let token = localStorage.getItem("token");
     let headers = new HttpHeaders({
       "Content-Type": "application/json",
-    
-       auth: token,
+      "Access-Control-Allow-Origin": "*",
+      auth: token,
     });
     return headers;
   }
+
 }

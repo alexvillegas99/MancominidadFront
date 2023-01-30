@@ -29,7 +29,7 @@
             <thead>
               <tr>
                 <th *ngFor="let encabezado of encabezados">{{ encabezado }}</th>
-                <th *ngIf="rol==='admin'">Acciones</th>
+                <th >Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -54,12 +54,12 @@
                   <button
                     (click)="open(modalPlaca, placa)"
                     class="btn btn-verde btn-fill"
-                    *ngIf="rol==='admin'"
+                   
                   >
                     <i class="fa fa-edit"></i>
                   </button>
                   <button
-                  *ngIf="rol==='admin'"
+                
                     class="btn btn-rojo btn-fill"
                     (click)="eliminarPlaca(placa.id)"
                   >
@@ -85,8 +85,12 @@
           </table>
           <ngb-pagination
             [collectionSize]="placasFiltradas.length"
+            [pageSize]="pageSize"
             [(page)]="page"
-            aria-label="Default pagination"
+            [maxSize]="20"
+            [rotate]="true"
+            [ellipses]="false"
+            [boundaryLinks]="true"
           ></ngb-pagination>
         </div>
       </div>
@@ -117,7 +121,7 @@
                     <div class="form-group">
                       <label>Placa</label>
                       <input
-                      [attr.disabled]="rol!='admin' ? '' : null"
+                     
                         type="text"
                         formControlName="placa"
                         class="form-control"
@@ -137,7 +141,7 @@
                     <div class="form-group">
                       <label>Tipo Placa</label>
                       <select
-                      [attr.disabled]="rol!='admin' ? '' : null"
+                     
                         class="form-select"
                         aria-label="Default select example"
                         formControlName="id_tipo_placa"
@@ -148,7 +152,7 @@
                       </select>
                       <span
                         class="text-danger"
-                        [attr.disabled]="rol!='admin' ? '' : null"
+                       
                         *ngIf="placaForm.get('id_tipo_placa')?.hasError('required') &&
                         placaForm.get('id_tipo_placa')?.touched
                         "
@@ -163,7 +167,7 @@
                     <div class="form-group">
                       <label>Tipo vehículo</label>
                       <select
-                      [attr.disabled]="rol!='admin' ? '' : null"
+                     
                         class="form-select"
                         aria-label="Default select example"
                         formControlName="id_tipo_vehiculo"
@@ -194,10 +198,10 @@
                         formControlName="estado"
                         (change)="imprimir()"
                       >
-                        <label ngbButtonLabel class="btn-success" [attr.disabled]="rol!='admin' ? '' : null">
+                        <label ngbButtonLabel class="btn-success" >
                           <input  ngbButton type="radio" [value]="true" /> Entregado
                         </label>
-                        <label ngbButtonLabel class="btn-danger" [attr.disabled]="rol!='admin' ? '' : null">
+                        <label ngbButtonLabel class="btn-danger">
                           <input ngbButton type="radio" [value]="false" />
                           Pendiente
                         </label>

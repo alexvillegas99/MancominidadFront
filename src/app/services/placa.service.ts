@@ -60,8 +60,10 @@ export class PlacaService {
     let token = localStorage.getItem("token");
     let headers = new HttpHeaders({
       "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
       auth: token,
     });
     return headers;
   }
+
 }

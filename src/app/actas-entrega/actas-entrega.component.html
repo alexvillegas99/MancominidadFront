@@ -82,8 +82,12 @@
         </table>
         <ngb-pagination
           [collectionSize]="actasFiltradas.length"
-          [(page)]="page"
-          aria-label="Default pagination"
+          [pageSize]="pageSize"
+            [(page)]="page"
+            [maxSize]="20"
+            [rotate]="true"
+            [ellipses]="false"
+            [boundaryLinks]="true"
         ></ngb-pagination>
       </div>
     </div>
@@ -257,7 +261,7 @@
                                 {{ usuario | uppercase }} quien entrega y el
                                 Sr(ita) {{ nombre | uppercase }} con CI.
                                 {{ cedula }} suscriben la presente acta de
-                                entreha de la placa: <br /><br />
+                                entrega de la placa: <br /><br />
                                 <table class="table table-bordered">
                                   <thead>
                                     <tr>

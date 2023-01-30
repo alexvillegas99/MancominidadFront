@@ -17,12 +17,14 @@ export class TipoPlacaService {
     return this.http.get<TipoPlaca[]>(`${environment.api_URL}/tipo_placa`,{ headers: options });
 
   }
- private createRequestOptions() {
-  let token = localStorage.getItem('token');
-  let headers = new HttpHeaders({
+  private createRequestOptions() {
+    let token = localStorage.getItem("token");
+    let headers = new HttpHeaders({
       "Content-Type": "application/json",
-      "auth": token
-  });
-  return headers;
-}
+      "Access-Control-Allow-Origin": "*",
+      auth: token,
+    });
+    return headers;
+  }
+
 }

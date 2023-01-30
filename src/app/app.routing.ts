@@ -12,7 +12,7 @@ import { ConsultaComponent } from './consulta/consulta.component';
 const routes: Routes =[
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'placas',
     pathMatch: 'full',
   }, 
   {
@@ -35,7 +35,7 @@ const routes: Routes =[
   }]},
   {
     path: '**',
-    redirectTo: 'dashboard'
+    redirectTo: 'placas'
   },
  
 ];

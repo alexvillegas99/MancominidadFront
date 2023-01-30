@@ -16,12 +16,14 @@ export class TipoVehiculoService {
     return this.http.get<TipoVehiculo[]>(`${environment.api_URL}/tipo_vehiculo`,{ headers: options });
 
   }
- private createRequestOptions() {
-  let token = localStorage.getItem('token');
-  let headers = new HttpHeaders({
+  private createRequestOptions() {
+    let token = localStorage.getItem("token");
+    let headers = new HttpHeaders({
       "Content-Type": "application/json",
-      "auth": token
-  });
-  return headers;
-}
+      "Access-Control-Allow-Origin": "*",
+      auth: token,
+    });
+    return headers;
+  }
+
 }

@@ -22,9 +22,11 @@ export class AuthService {
     return this.loggedId.asObservable();
   }
   login(authData: User): Observable<UserResponse | void> {
-    return this.http.post<UserResponse>(`${environment.api_URL}/auth`, authData,{})
+    let options = this.createRequestOptions();
+    return this.http.post<UserResponse>(`${environment.api_URL}/auth`, authData,{headers:options})
       .pipe(
         map((res: UserResponse) => {
+          console.log(res)
           this.guardarCredenciales(res);
           this.loggedId.next(true);
           return res;
@@ -33,6 +35,17 @@ export class AuthService {
         catchError((err) => this.error(err))
       );
   }
+  checkLogin(authData: User): Observable<boolean> {
+    let options = this.createRequestOptions();
+    return this.http.post<UserResponse>(`${environment.api_URL}/auth`, authData,{headers:options})
+      .pipe(
+        map(response => {
+          this.guardarCredenciales(response);
+          this.loggedId.next(true);
+          return true;
+        }),
+        catchError((err) => this.error(err))
+  )}
   logOut(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
@@ -57,12 +70,20 @@ export class AuthService {
     localStorage.setItem('userName', String(res.userName));
   }
   private error(err:any): Observable<never> {
-
+    console.log(err)
       this._notificacion.showNotification("Usuario o contraseña incorrecta", "danger");
    return;      
    
 
   }
-
+  private createRequestOptions() {
+    let token = localStorage.getItem("token");
+    let headers = new HttpHeaders({
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*", 
+      'No-Auth':'True'
+    });
+    return headers;
+  }
 
 }

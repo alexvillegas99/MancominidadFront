@@ -33,8 +33,6 @@ export class SidebarComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
-
-
     if (this.rol != "admin") {
       this.menuItems = ROUTES.filter((item) => item.title != "Usuarios");
     } else {
