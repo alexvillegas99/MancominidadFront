@@ -165,7 +165,7 @@ export class ReportesComponent implements OnInit {
     this.buscarPlacasPorFechas();
   }
   filtroTipoPlacaPlacas() {
-    console.log(this.tipoPlaca, this.placasFiltradas[0].tipo_placa);
+  
     this.placasFiltradas = this.placasFiltradas.filter(
       (element) => element.tipo_placa === this.tipoPlaca
     );
@@ -207,7 +207,7 @@ export class ReportesComponent implements OnInit {
   getActas() {
     this._actasService.getActasReportes().subscribe((result) => {
       this.actas = this.actasFiltradas = result;
-      console.log(this.actas);
+     
     });
   }
 
